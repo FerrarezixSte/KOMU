@@ -310,6 +310,32 @@
   .dropdown button:hover { background: var(--bg-hover); }
   .dropdown .danger { color: var(--danger); }
 
+  /* Notificações */
+  .nav-ico { position: relative; display: inline-flex; }
+  .nav-badge { position: absolute; top: -6px; right: -8px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 11px; font-weight: 700; display: grid; place-items: center; border: 2px solid var(--bg); line-height: 1; }
+  .notif-label { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 13px; font-weight: 600; padding: 0 0 4px 44px; }
+  .notif-label svg { width: 15px; height: 15px; color: var(--accent); }
+  .req-banner { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; border-bottom: 1px solid var(--border); text-align: left; font-weight: 600; }
+  .req-banner:hover { background: var(--bg-hover); }
+  .req-banner svg { color: var(--accent); width: 22px; height: 22px; }
+
+  /* Autocompletar @ */
+  .mention-box { position: fixed; z-index: 70; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); width: 280px; max-width: calc(100vw - 16px); overflow: hidden; }
+  .mention-box button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; text-align: left; }
+  .mention-box button.sel, .mention-box button:hover { background: var(--bg-hover); }
+  .mention-box .avatar { width: 32px; height: 32px; font-size: 13px; }
+  .mention-box .names { min-width: 0; }
+  .mention-box .names div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Denúncia */
+  .report-list { padding: 0 16px; display: grid; gap: 2px; }
+  .report-list label { display: flex; align-items: center; gap: 12px; padding: 10px 8px; border-radius: 8px; cursor: pointer; }
+  .report-list label:hover { background: var(--bg-hover); }
+  .report-list input { accent-color: var(--accent); width: 18px; height: 18px; }
+  .report-intro { padding: 0 16px 8px; color: var(--text-muted); }
+  .field textarea { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text); outline: none; resize: vertical; min-height: 80px; }
+  .field textarea:focus { border-color: var(--accent); }
+
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent); color: var(--on-accent); padding: 12px 20px; border-radius: 8px; font-weight: 500; opacity: 0; pointer-events: none; transition: all .25s; z-index: 80; max-width: calc(100vw - 32px); text-align: center; }
   .toast.show { opacity: 1; transform: translateX(-50%); }
 
@@ -359,6 +385,7 @@
     <button class="logo" data-go="home" data-i18n-aria="home"><span class="wordmark"></span><span class="mark"></span></button>
     <button class="nav-item" data-go="home"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span data-i18n="home"></span></button>
     <button class="nav-item" data-go="explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span data-i18n="explore"></span></button>
+    <button class="nav-item" data-go="notifications"><span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span class="nav-badge" data-notif-badge hidden></span></span><span data-i18n="notifications"></span></button>
     <button class="nav-item" data-go="liked"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span data-i18n="liked"></span></button>
     <button class="nav-item" data-go="bookmarks"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span data-i18n="bookmarks"></span></button>
     <button class="nav-item" data-go="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg><span data-i18n="profile"></span></button>
@@ -429,6 +456,7 @@
 <nav class="bottom-nav" aria-label="KOMU">
   <button data-go="home" data-i18n-aria="home"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></button>
   <button data-go="explore" data-i18n-aria="explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+  <button data-go="notifications" data-i18n-aria="notifications"><span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span class="nav-badge" data-notif-badge hidden></span></span></button>
   <button data-go="liked" data-i18n-aria="liked"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>
   <button data-go="me" data-i18n-aria="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></button>
 </nav>
@@ -551,6 +579,31 @@
   </div>
 </div>
 
+<!-- Modal: denunciar post -->
+<div class="modal-backdrop" id="reportModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-top">
+      <button class="icon-btn" data-close data-i18n-aria="close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <strong data-i18n="reportTitle"></strong>
+    </div>
+    <p class="report-intro" data-i18n="reportWhy"></p>
+    <form id="reportForm" novalidate>
+      <div class="report-list">
+        <label><input type="radio" name="reason" value="spam"> <span data-i18n="rSpam"></span></label>
+        <label><input type="radio" name="reason" value="odio"> <span data-i18n="rOdio"></span></label>
+        <label><input type="radio" name="reason" value="assedio"> <span data-i18n="rAssedio"></span></label>
+        <label><input type="radio" name="reason" value="violencia"> <span data-i18n="rViolencia"></span></label>
+        <label><input type="radio" name="reason" value="sexual"> <span data-i18n="rSexual"></span></label>
+        <label><input type="radio" name="reason" value="desinformacao"> <span data-i18n="rDesinfo"></span></label>
+        <label><input type="radio" name="reason" value="outro"> <span data-i18n="rOutro"></span></label>
+      </div>
+      <div class="field"><label for="reportDetails" data-i18n="reportDetails"></label><textarea id="reportDetails" maxlength="500"></textarea></div>
+      <p class="form-msg" id="reportMsg" style="padding:0 16px"></p>
+      <div class="modal-footer"><button class="btn-primary" type="submit" id="reportSubmit" data-i18n="sendReport"></button></div>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -651,6 +704,18 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       configureFirst: "Configure o Supabase primeiro (veja o README)",
       setupTitle: "Falta conectar o banco de dados",
       setupText: "Preencha SUPABASE_URL e SUPABASE_KEY no começo do script do index.html. O passo a passo está no README.md.",
+      notifications: "Notificações", emptyNotifT: "Nenhuma notificação ainda",
+      emptyNotifD: "Quando alguém marcar você com @ ou responder um post seu, aparece aqui.",
+      mentionedYou: "{name} marcou você", repliedYou: "{name} respondeu você",
+      requestsBanner1: "1 solicitação para seguir — toque para ver", requestsBannerN: "{n} solicitações para seguir — toque para ver",
+      report: "Denunciar", reportTitle: "Denunciar post", reportWhy: "Por que você está denunciando este post?",
+      rSpam: "Spam ou golpe", rOdio: "Discurso de ódio", rAssedio: "Assédio ou bullying", rViolencia: "Violência ou ameaça",
+      rSexual: "Conteúdo sexual", rDesinfo: "Desinformação", rOutro: "Outro motivo",
+      reportDetails: "Detalhes (opcional)", sendReport: "Enviar denúncia", chooseReason: "Escolha um motivo.",
+      reportSent: "Denúncia enviada. Obrigado por ajudar a manter a KOMU segura.", reportDup: "Você já denunciou este post.",
+      errDbOutdated: "O banco de dados está desatualizado. Rode o supabase.sql novo no Supabase.",
+      errNoBucket: "O espaço para imagens ainda não existe. Rode o supabase.sql novo no Supabase.",
+      errMfaOff: "A verificação em duas etapas está desligada no Supabase: ative em Authentication → Multi-Factor → TOTP.",
     },
     en: {
       home: "Home", explore: "Explore", liked: "Likes", bookmarks: "Bookmarks", profile: "Profile",
@@ -717,6 +782,18 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       configureFirst: "Set up Supabase first (see the README)",
       setupTitle: "The database isn't connected yet",
       setupText: "Fill in SUPABASE_URL and SUPABASE_KEY at the top of the script in index.html. Steps are in README.md.",
+      notifications: "Notifications", emptyNotifT: "No notifications yet",
+      emptyNotifD: "When someone mentions you with @ or replies to your post, it shows up here.",
+      mentionedYou: "{name} mentioned you", repliedYou: "{name} replied to you",
+      requestsBanner1: "1 follow request — tap to see", requestsBannerN: "{n} follow requests — tap to see",
+      report: "Report", reportTitle: "Report post", reportWhy: "Why are you reporting this post?",
+      rSpam: "Spam or scam", rOdio: "Hate speech", rAssedio: "Harassment or bullying", rViolencia: "Violence or threats",
+      rSexual: "Sexual content", rDesinfo: "Misinformation", rOutro: "Something else",
+      reportDetails: "Details (optional)", sendReport: "Send report", chooseReason: "Choose a reason.",
+      reportSent: "Report sent. Thanks for helping keep KOMU safe.", reportDup: "You already reported this post.",
+      errDbOutdated: "The database is out of date. Run the new supabase.sql in Supabase.",
+      errNoBucket: "The image storage doesn't exist yet. Run the new supabase.sql in Supabase.",
+      errMfaOff: "Two-step verification is turned off in Supabase: enable it under Authentication → Multi-Factor → TOTP.",
     },
   };
 
@@ -743,6 +820,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     replyTo: null, pending: 0,
     trends: null, suggestions: null,
     mfaPending: false,
+    reported: new Set(),             // posts que eu denunciei (ficam ocultos para mim)
+    notifCount: 0,
   };
   let loadSeq = 0;
 
@@ -787,6 +866,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     trash: '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
     copy: '<svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg>',
     lock: '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+    flag: '<svg viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
     shield: '<svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>',
   };
   const lockHTML = () => `<span class="lock" title="${esc(t("privateAccount"))}" aria-label="${esc(t("privateAccount"))}">${ICONS.lock}</span>`;
@@ -797,6 +877,15 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const el = $("#toast");
     el.textContent = msg; el.classList.add("show");
     clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 2800);
+  }
+
+  // Traduz erros do Supabase em mensagens úteis (e mostra o detalhe técnico)
+  function errMsg(base, e) {
+    const m = (e && (e.message || e.error_description || e.error || e.msg)) || "";
+    if (/bucket not found/i.test(m)) return t("errNoBucket");
+    if ((e && (e.code === "42703" || e.code === "PGRST204" || e.code === "42P01")) || /column .* does not exist|schema cache/i.test(m)) return t("errDbOutdated");
+    if (/mfa|totp|factor/i.test(m) && /disabled|not enabled/i.test(m)) return t("errMfaOff");
+    return m ? `${base} (${m})` : base;
   }
 
   /* =================================================================
@@ -816,7 +905,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     setAuthMode($("#authForm").dataset.mode, true);
     modal.ta.placeholder = t(state.replyTo ? "replyPh" : "whatsHappening");
     renderMe(); renderNav(); renderProfileHead(); renderTimeline();
-    renderTrends(); renderFollow(); renderNewPosts();
+    renderTrends(); renderFollow(); renderNewPosts(); renderNotifBadge();
     if ($("#settingsModal").classList.contains("open")) { renderRequests(); render2fa(); }
     closePicker();
   }
@@ -853,6 +942,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
           </div>`}
         </div>
       </article>`;
+    if (opts.notif) {
+      const icon = opts.notif === "reply" ? ICONS.reply : '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg>';
+      return `<div class="post-wrap"><div class="notif-label">${icon} ${esc(t(opts.notif === "reply" ? "repliedYou" : "mentionedYou", { name: p.name }))}</div>${article}</div>`;
+    }
     if (opts.repostBy) return `<div class="post-wrap"><div class="reposted-by">${ICONS.repost} ${esc(t("repostedBy", { name: opts.repostBy }))}</div>${article}</div>`;
     return article;
   }
@@ -876,18 +969,23 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         return;
       }
     }
-    if (state.loading && !state.posts.length) { tl.innerHTML = '<div class="spinner"></div>'; return; }
-    if (!state.posts.length) {
-      const needLogin = (["liked", "bookmarks"].includes(v) || (v === "home" && state.tab === "following")) && !state.me;
+    const banner = v === "notifications" && state.me && state.requests.length
+      ? `<button class="req-banner" data-open-settings>${ICONS.lock} ${esc(state.requests.length === 1 ? t("requestsBanner1") : t("requestsBannerN", { n: state.requests.length }))}</button>` : "";
+    const posts = state.posts.filter((p) => !state.reported.has(p.id));
+    if (state.loading && !posts.length) { tl.innerHTML = banner + '<div class="spinner"></div>'; return; }
+    if (!posts.length) {
+      const needLogin = (["liked", "bookmarks", "notifications"].includes(v) || (v === "home" && state.tab === "following")) && !state.me;
       if (needLogin) { tl.innerHTML = emptyHTML("emptyLogin", true); return; }
       const key = v === "home" ? (state.tab === "following" ? "emptyFollowing" : "emptyHome")
-        : { explore: "emptyExplore", liked: "emptyLiked", bookmarks: "emptyBookmarks", profile: "emptyProfile" }[v];
-      tl.innerHTML = emptyHTML(key);
+        : { explore: "emptyExplore", liked: "emptyLiked", bookmarks: "emptyBookmarks", profile: "emptyProfile", notifications: "emptyNotif" }[v];
+      tl.innerHTML = banner + emptyHTML(key);
       return;
     }
     const prof = v === "profile" && state.profile ? state.profile.u : null;
-    tl.innerHTML = state.posts.map((p) => postHTML(p, {
+    const myName = state.me && state.me.username;
+    tl.innerHTML = banner + posts.map((p) => postHTML(p, {
       repostBy: prof && p.author_id !== prof.id ? prof.name : null,
+      notif: v === "notifications" ? (p.reply_to_username === myName && !mentions(p.content, myName) ? "reply" : "mention") : null,
     })).join("") + (state.hasMore ? `<button class="load-more" id="loadMore">${esc(t(state.loading ? "loading" : "loadMore"))}</button>` : "");
   }
 
@@ -920,6 +1018,9 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         const set = v === "liked" ? state.liked : state.bookmarked;
         if (!state.me || !set.size) skip = true;
         else q = q.in("id", [...set].slice(0, 300));
+      } else if (v === "notifications") {
+        if (!state.me) skip = true;
+        else q = notifQuery(q);
       } else if (v === "profile") {
         if (!state.profile || !state.profile.canSee) skip = true;
         else {
@@ -932,7 +1033,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         const { data, error } = await q;
         if (error) throw error;
         if (seq !== loadSeq) return;
-        state.posts = more ? state.posts.concat(data) : data;
+        const rows = v === "notifications" ? data.filter(isNotifFor) : data;
+        state.posts = more ? state.posts.concat(rows) : rows;
         state.hasMore = data.length === PAGE;
       }
     } catch (e) {
@@ -941,6 +1043,37 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     } finally {
       if (seq === loadSeq) { state.loading = false; renderTimeline(); }
     }
+  }
+
+  /* ---------------- Notificações (marcações e respostas) ---------------- */
+  const mentions = (text, username) => !!username && new RegExp("(^|[^\\w])@" + username + "(?!\\w)", "i").test(text || "");
+  function isNotifFor(p) {
+    const u = state.me && state.me.username;
+    return !!u && p.author_id !== state.me.id && (p.reply_to_username === u || mentions(p.content, u));
+  }
+  function notifQuery(q) {
+    const u = state.me.username;
+    return q.neq("author_id", state.me.id).or(`content.ilike.%@${u}%,reply_to_username.eq.${u}`);
+  }
+  const seenKey = () => "komu:notifSeen:" + (state.me ? state.me.id : "");
+  async function loadNotifCount() {
+    if (!sb || !state.me) { state.notifCount = 0; return renderNotifBadge(); }
+    const since = ls.get(seenKey()) || new Date(0).toISOString();
+    try {
+      const { data } = await notifQuery(sb.from("feed").select("id,author_id,content,reply_to_username,created_at"))
+        .gt("created_at", since).order("created_at", { ascending: false }).limit(50);
+      state.notifCount = (data || []).filter(isNotifFor).length;
+    } catch { state.notifCount = 0; }
+    renderNotifBadge();
+  }
+  function renderNotifBadge() {
+    const n = state.me ? state.notifCount + state.requests.length : 0;
+    $$("[data-notif-badge]").forEach((el) => { el.hidden = !n; el.textContent = n > 9 ? "9+" : n; });
+  }
+  function markNotifsSeen() {
+    if (!state.me) return;
+    ls.set(seenKey(), new Date().toISOString());
+    state.notifCount = 0; renderNotifBadge();
   }
 
   /* ---------------- Assuntos e sugestões ---------------- */
@@ -1049,6 +1182,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     state.pending = 0; renderNewPosts();
     window.scrollTo({ top: 0 });
     renderNav(); renderProfileHead();
+    if (view === "notifications") markNotifsSeen();
     if (view === "profile") {
       ++loadSeq; state.posts = []; state.loading = true; renderTimeline();
       await loadProfile();
@@ -1058,7 +1192,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   }
 
   function renderNav() {
-    const titles = { home: t("home"), explore: state.query ? t("searchTitle", { q: state.query }) : t("explore"), liked: t("liked"), bookmarks: t("bookmarks"), profile: state.profile ? state.profile.u.name : t("profile") };
+    const titles = { home: t("home"), explore: state.query ? t("searchTitle", { q: state.query }) : t("explore"), liked: t("liked"), bookmarks: t("bookmarks"), notifications: t("notifications"), profile: state.profile ? state.profile.u.name : t("profile") };
     $("#viewTitle").textContent = titles[state.view];
     $("#tabs").style.display = state.view === "home" ? "flex" : "none";
     $("#backBtn").hidden = state.view !== "profile";
@@ -1080,6 +1214,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     $$("[data-me-name]").forEach((el) => (el.textContent = m ? m.name : t("login")));
     $$("[data-me-handle]").forEach((el) => (el.textContent = m ? "@" + m.username : t("orSignup")));
     $$("[data-req-dot]").forEach((el) => (el.hidden = !(m && state.requests.length)));
+    renderNotifBadge();
   }
 
   function renderNewPosts() {
@@ -1099,7 +1234,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
 
   async function loadMe(session) {
     if (!session) {
-      state.me = null; state.requests = [];
+      state.me = null; state.requests = []; state.reported.clear(); state.notifCount = 0;
       state.liked.clear(); state.reposted.clear(); state.bookmarked.clear(); state.following.clear();
       return;
     }
@@ -1116,7 +1251,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     state.reposted = new Set((r.data || []).map((x) => x.post_id));
     state.bookmarked = new Set((b.data || []).map((x) => x.post_id));
     state.following = new Map((f.data || []).map((x) => [x.following_id, x.status || "accepted"]));
+    const rep = await sb.from("reports").select("post_id").eq("reporter_id", uid);
+    state.reported = new Set(((rep && rep.data) || []).map((x) => x.post_id));
     await loadRequests();
+    loadNotifCount();
   }
 
   async function loadRequests() {
@@ -1231,13 +1369,15 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
 
   $("#mfaCode").addEventListener("input", (e) => {
     e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6);
-    if (e.target.value.length === 6) $("#mfaForm").requestSubmit();
+    if (e.target.value.length === 6 && !$("#mfaSubmit").disabled) $("#mfaForm").requestSubmit();
   });
   $("#mfaForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const code = $("#mfaCode").value.replace(/\D/g, "");
     if (code.length !== 6) return msg("#mfaMsg", t("errCode"), "error");
-    const btn = $("#mfaSubmit"); btn.disabled = true;
+    const btn = $("#mfaSubmit");
+    if (btn.disabled) return;
+    btn.disabled = true;
     try {
       const { data: f, error: e1 } = await sb.auth.mfa.listFactors();
       const factor = f && f.totp && f.totp[0];
@@ -1249,7 +1389,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       toast(t("welcome"));
       syncAuth();
     } catch (err) {
-      console.error(err); msg("#mfaMsg", t("errGeneric"), "error");
+      console.error(err); msg("#mfaMsg", errMsg(t("errGeneric"), err), "error");
     } finally { btn.disabled = false; }
   });
   $("#mfaCancel").addEventListener("click", async () => {
@@ -1340,7 +1480,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       msg("#stMsg", "");
       renderSettingsMedia();
     } catch (e) {
-      console.error(e); msg("#stMsg", t("uploadError"), "error");
+      console.error(e); msg("#stMsg", errMsg(t("uploadError"), e), "error");
     } finally { $("#stSave").disabled = false; }
   }
 
@@ -1358,7 +1498,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     $("#stSave").disabled = true;
     const { error } = await sb.from("profiles").update(upd).eq("id", state.me.id);
     $("#stSave").disabled = false;
-    if (error) { console.error(error); return msg("#stMsg", t("saveError"), "error"); }
+    if (error) { console.error(error); return msg("#stMsg", errMsg(t("saveError"), error), "error"); }
     const keep = [upd.avatar_url, upd.cover_url];
     const unused = [state.me.avatar_url, state.me.cover_url, ...draft.uploads].filter((u) => u && !keep.includes(u));
     removeFiles([...new Set(unused)]);
@@ -1468,7 +1608,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         for (const f of (l && l.all) || []) {
           if (f.factor_type === "totp" && f.status !== "verified") await sb.auth.mfa.unenroll({ factorId: f.id });
         }
-        const { data, error } = await sb.auth.mfa.enroll({ factorType: "totp", friendlyName: "KOMU " + Date.now() });
+        const { data, error } = await sb.auth.mfa.enroll({ factorType: "totp", friendlyName: "KOMU " + Date.now(), issuer: "KOMU" });
         if (error) throw error;
         twofa = { status: "enrolling", factorId: data.id, qr: qrSrc(data.totp.qr_code), secret: data.totp.secret };
         render2fa();
@@ -1476,7 +1616,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         const code = ($("#tfCode").value || "").replace(/\D/g, "");
         if (code.length !== 6) { b.disabled = false; return msg("#tfMsg", t("errCode"), "error"); }
         const { error } = await sb.auth.mfa.challengeAndVerify({ factorId: twofa.factorId, code });
-        if (error) { b.disabled = false; return msg("#tfMsg", t("errCode"), "error"); }
+        if (error) { b.disabled = false; return msg("#tfMsg", /invalid|code/i.test(error.message || "") ? t("errCode") : errMsg(t("errCode"), error), "error"); }
         twofa = { status: "on", factorId: twofa.factorId };
         render2fa(); toast(t("twofaEnabled"));
       } else if (act === "cancel") {
@@ -1490,7 +1630,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         twofa = { status: "off" }; render2fa(); toast(t("twofaDisabled"));
       }
     } catch (err) {
-      console.error(err); b.disabled = false; toast(t("errGeneric"));
+      console.error(err); b.disabled = false;
+      const text = errMsg(t("errGeneric"), err);
+      const m = $("#tfMsg");
+      if (m) msg("#tfMsg", text, "error"); else { toast(text); $("#st2fa").insertAdjacentHTML("beforeend", `<p class="form-msg error">${esc(text)}</p>`); }
     }
   });
 
@@ -1524,6 +1667,63 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (picker && !e.target.closest(".emoji-picker") && !e.target.closest("[data-emoji-btn]")) closePicker();
   });
   addEventListener("resize", closePicker);
+
+  /* =================================================================
+     Autocompletar @marcações
+     ================================================================= */
+  let mbox = null, mItems = [], mSel = 0, mTimer = null, mReq = 0;
+  function closeMentions() { mbox?.remove(); mbox = null; mItems = []; }
+  function renderMentions(ta, onPick) {
+    if (!mItems.length) return closeMentions();
+    if (!mbox) {
+      mbox = document.createElement("div"); mbox.className = "mention-box"; mbox.setAttribute("role", "listbox");
+      document.body.appendChild(mbox);
+      mbox.addEventListener("mousedown", (e) => e.preventDefault());
+    }
+    mbox.innerHTML = mItems.map((u, i) => `<button type="button" role="option" class="${i === mSel ? "sel" : ""}" data-i="${i}">${avatarHTML(u)}<div class="names"><div style="font-weight:700">${esc(u.name)}</div><div class="muted">@${esc(u.username)}</div></div></button>`).join("");
+    mbox.onclick = (e) => { const b = e.target.closest("[data-i]"); if (b) onPick(mItems[+b.dataset.i]); };
+    const r = ta.getBoundingClientRect();
+    const top = Math.min(r.bottom + 4, innerHeight - mbox.offsetHeight - 8);
+    mbox.style.top = Math.max(8, top) + "px";
+    mbox.style.left = Math.max(8, Math.min(r.left, innerWidth - mbox.offsetWidth - 8)) + "px";
+  }
+  function mentionToken(ta) {
+    const pos = ta.selectionStart ?? 0;
+    const m = ta.value.slice(0, pos).match(/(^|\s)@(\w{1,20})$/);
+    return m ? { start: pos - m[2].length - 1, query: m[2].toLowerCase(), end: pos } : null;
+  }
+  function attachMentions(ta, update) {
+    const pick = (u) => {
+      const tok = mentionToken(ta); if (!tok) return closeMentions();
+      ta.value = ta.value.slice(0, tok.start) + "@" + u.username + " " + ta.value.slice(tok.end);
+      const p = tok.start + u.username.length + 2;
+      ta.focus(); ta.selectionStart = ta.selectionEnd = p;
+      closeMentions(); update();
+    };
+    ta.addEventListener("input", () => {
+      clearTimeout(mTimer);
+      const tok = mentionToken(ta);
+      if (!tok || !sb) return closeMentions();
+      mTimer = setTimeout(async () => {
+        const req = ++mReq;
+        const { data } = await sb.from("profiles").select("id,username,name,color,avatar_url")
+          .ilike("username", tok.query.replace(/_/g, "\\_") + "%").order("username").limit(5);
+        if (req !== mReq || !mentionToken(ta)) return;
+        mItems = data || []; mSel = 0; renderMentions(ta, pick);
+      }, 150);
+    });
+    ta.addEventListener("keydown", (e) => {
+      if (!mbox || !mItems.length) return;
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        mSel = (mSel + (e.key === "ArrowDown" ? 1 : -1) + mItems.length) % mItems.length;
+        renderMentions(ta, pick);
+      } else if (e.key === "Enter" || e.key === "Tab") {
+        e.preventDefault(); e.stopPropagation(); pick(mItems[mSel]);
+      } else if (e.key === "Escape") { e.stopPropagation(); closeMentions(); }
+    });
+    ta.addEventListener("blur", () => setTimeout(closeMentions, 120));
+  }
 
   /* =================================================================
      Composer
@@ -1564,6 +1764,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       update();
     });
     $$("[data-insert]", root).forEach((b) => b.addEventListener("click", () => insert(b.dataset.insert, true)));
+    attachMentions(ta, update);
     const eb = $("[data-emoji-btn]", root);
     eb.addEventListener("mousedown", (e) => e.preventDefault());
     eb.addEventListener("click", () => {
@@ -1610,6 +1811,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   }));
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
+    if (mbox) return closeMentions();
     if (picker) return closePicker();
     $$(".modal-backdrop.open").forEach(closeModal); closeDropdown();
   });
@@ -1641,7 +1843,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     dropdown = document.createElement("div");
     dropdown.className = "dropdown";
     dropdown.innerHTML = (state.me && post.author_id === state.me.id ? `<button class="danger" data-m="delete">${ICONS.trash} ${esc(t("del"))}</button>` : "") +
-      `<button data-m="copy">${ICONS.copy} ${esc(t("copyText"))}</button>`;
+      `<button data-m="copy">${ICONS.copy} ${esc(t("copyText"))}</button>` +
+      (!state.me || post.author_id !== state.me.id ? `<button class="danger" data-m="report">${ICONS.flag} ${esc(t("report"))}</button>` : "");
     document.body.appendChild(dropdown);
     const r = btn.getBoundingClientRect(), w = dropdown.offsetWidth;
     dropdown.style.top = Math.min(r.bottom + 4, innerHeight - dropdown.offsetHeight - 8) + "px";
@@ -1656,8 +1859,33 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         renderTimeline(); loadTrends(); toast(t("deleted"));
       }
       if (m === "copy") copy(post.content);
+      if (m === "report") openReport(post);
     });
   }
+
+  /* ---------------- Denúncias ---------------- */
+  let reportPost = null;
+  function openReport(post) {
+    if (!requireAuth()) return;
+    reportPost = post;
+    $("#reportForm").reset(); msg("#reportMsg", "");
+    openModal($("#reportModal"));
+  }
+  $("#reportForm").addEventListener("change", () => msg("#reportMsg", ""));
+  $("#reportForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const reason = ($("#reportForm input[name=reason]:checked") || {}).value;
+    if (!reason) return msg("#reportMsg", t("chooseReason"), "error");
+    const details = $("#reportDetails").value.trim() || null;
+    const btn = $("#reportSubmit"); btn.disabled = true;
+    const { error } = await sb.from("reports").insert({ post_id: reportPost.id, reporter_id: state.me.id, reason, details });
+    btn.disabled = false;
+    if (error && error.code !== "23505") { console.error(error); return msg("#reportMsg", errMsg(t("errGeneric"), error), "error"); }
+    state.reported.add(reportPost.id);
+    closeModal($("#reportModal"));
+    toast(t(error ? "reportDup" : "reportSent"));
+    renderTimeline();
+  });
   document.addEventListener("click", (e) => { if (dropdown && !e.target.closest(".dropdown") && !e.target.closest("[data-action=menu]")) closeDropdown(); });
   addEventListener("scroll", closeDropdown, { passive: true });
 
@@ -1821,6 +2049,9 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     sb.channel("novos-posts")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "posts" }, (payload) => {
         if (state.me && payload.new.author_id === state.me.id) return;
+        if (state.me && mentions(payload.new.content, state.me.username)) {
+          if (state.view === "notifications") loadTimeline(); else { state.notifCount++; renderNotifBadge(); }
+        }
         if (payload.new.reply_to) return;
         state.pending++; renderNewPosts();
       })
