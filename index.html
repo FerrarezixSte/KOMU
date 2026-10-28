@@ -315,6 +315,13 @@
   .nav-badge { position: absolute; top: -6px; right: -8px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 11px; font-weight: 700; display: grid; place-items: center; border: 2px solid var(--bg); line-height: 1; }
   .notif-label { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 13px; font-weight: 600; padding: 0 0 4px 44px; }
   .notif-label svg { width: 15px; height: 15px; color: var(--accent); }
+  .notif-follow { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); transition: background .15s; animation: fadeIn .25s ease; }
+  .notif-follow:hover { background: var(--bg-hover); }
+  .notif-follow .nf-icon { width: 40px; display: flex; justify-content: center; color: var(--accent); flex-shrink: 0; }
+  .notif-follow .nf-icon svg { width: 26px; height: 26px; }
+  .notif-follow .nf-body { flex: 1; min-width: 0; }
+  .notif-follow .nf-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .notif-follow .nf-text { margin-top: 6px; }
   .req-banner { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; border-bottom: 1px solid var(--border); text-align: left; font-weight: 600; }
   .req-banner:hover { background: var(--bg-hover); }
   .req-banner svg { color: var(--accent); width: 22px; height: 22px; }
@@ -705,7 +712,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       setupTitle: "Falta conectar o banco de dados",
       setupText: "Preencha SUPABASE_URL e SUPABASE_KEY no começo do script do index.html. O passo a passo está no README.md.",
       notifications: "Notificações", emptyNotifT: "Nenhuma notificação ainda",
-      emptyNotifD: "Quando alguém marcar você com @ ou responder um post seu, aparece aqui.",
+      emptyNotifD: "Quando alguém seguir você, marcar você com @ ou responder um post seu, aparece aqui.",
+      followedYou: "{name} começou a seguir você",
       mentionedYou: "{name} marcou você", repliedYou: "{name} respondeu você",
       requestsBanner1: "1 solicitação para seguir — toque para ver", requestsBannerN: "{n} solicitações para seguir — toque para ver",
       report: "Denunciar", reportTitle: "Denunciar post", reportWhy: "Por que você está denunciando este post?",
@@ -783,7 +791,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       setupTitle: "The database isn't connected yet",
       setupText: "Fill in SUPABASE_URL and SUPABASE_KEY at the top of the script in index.html. Steps are in README.md.",
       notifications: "Notifications", emptyNotifT: "No notifications yet",
-      emptyNotifD: "When someone mentions you with @ or replies to your post, it shows up here.",
+      emptyNotifD: "When someone follows you, mentions you with @ or replies to your post, it shows up here.",
+      followedYou: "{name} followed you",
       mentionedYou: "{name} mentioned you", repliedYou: "{name} replied to you",
       requestsBanner1: "1 follow request — tap to see", requestsBannerN: "{n} follow requests — tap to see",
       report: "Report", reportTitle: "Report post", reportWhy: "Why are you reporting this post?",
@@ -822,6 +831,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     mfaPending: false,
     reported: new Set(),             // posts que eu denunciei (ficam ocultos para mim)
     notifCount: 0,
+    followNotifs: [],                // quem começou a me seguir
   };
   let loadSeq = 0;
 
@@ -866,6 +876,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     trash: '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
     copy: '<svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg>',
     lock: '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+    userPlus: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M19 8v6M16 11h6"/></svg>',
     flag: '<svg viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
     shield: '<svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>',
   };
@@ -972,7 +983,18 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const banner = v === "notifications" && state.me && state.requests.length
       ? `<button class="req-banner" data-open-settings>${ICONS.lock} ${esc(state.requests.length === 1 ? t("requestsBanner1") : t("requestsBannerN", { n: state.requests.length }))}</button>` : "";
     const posts = state.posts.filter((p) => !state.reported.has(p.id));
-    if (state.loading && !posts.length) { tl.innerHTML = banner + '<div class="spinner"></div>'; return; }
+    const follows = v === "notifications" && state.me ? state.followNotifs : [];
+    if (state.loading && !posts.length && !follows.length) { tl.innerHTML = banner + '<div class="spinner"></div>'; return; }
+    if (v === "notifications" && (posts.length || follows.length)) {
+      const myName = state.me.username;
+      const items = [
+        ...posts.map((p) => ({ at: p.created_at, html: postHTML(p, { notif: p.reply_to_username === myName && !mentions(p.content, myName) ? "reply" : "mention" }) })),
+        ...follows.map((f) => ({ at: f.created_at, html: followNotifHTML(f) })),
+      ].sort((a, b) => (a.at < b.at ? 1 : -1));
+      tl.innerHTML = banner + items.map((i) => i.html).join("") +
+        (state.hasMore ? `<button class="load-more" id="loadMore">${esc(t(state.loading ? "loading" : "loadMore"))}</button>` : "");
+      return;
+    }
     if (!posts.length) {
       const needLogin = (["liked", "bookmarks", "notifications"].includes(v) || (v === "home" && state.tab === "following")) && !state.me;
       if (needLogin) { tl.innerHTML = emptyHTML("emptyLogin", true); return; }
@@ -1020,7 +1042,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         else q = q.in("id", [...set].slice(0, 300));
       } else if (v === "notifications") {
         if (!state.me) skip = true;
-        else q = notifQuery(q);
+        else { q = notifQuery(q); if (!more) await loadFollowNotifs(); }
       } else if (v === "profile") {
         if (!state.profile || !state.profile.canSee) skip = true;
         else {
@@ -1062,9 +1084,43 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     try {
       const { data } = await notifQuery(sb.from("feed").select("id,author_id,content,reply_to_username,created_at"))
         .gt("created_at", since).order("created_at", { ascending: false }).limit(50);
-      state.notifCount = (data || []).filter(isNotifFor).length;
+      const newFollowers = await fetchFollowers(since);
+      state.notifCount = (data || []).filter(isNotifFor).length + newFollowers.length;
     } catch { state.notifCount = 0; }
     renderNotifBadge();
+  }
+  function followNotifHTML(f) {
+    const u = f.user, ts = Date.parse(f.created_at);
+    return `<div class="notif-follow">
+      <div class="nf-icon">${ICONS.userPlus}</div>
+      <div class="nf-body">
+        <div class="nf-top"><div class="clickable" data-user="${u.id}">${avatarHTML(u)}</div>${followBtnHTML(u.id)}</div>
+        <div class="nf-text"><b class="clickable" data-user="${u.id}">${esc(u.name)}</b> <span class="muted">@${esc(u.username)}</span>
+          <span class="muted">· <time datetime="${esc(f.created_at)}">${timeAgo(ts)}</time></span><br>${esc(t("followedYou", { name: u.name }))}</div>
+      </div>
+    </div>`;
+  }
+  async function fetchFollowers(since) {
+    let q = sb.from("follows").select("follower_id,created_at,status").eq("following_id", state.me.id);
+    if (since) q = q.gt("created_at", since);
+    let r = await q.order("created_at", { ascending: false }).limit(50);
+    if (r.error) {   // banco ainda sem a coluna "status"
+      let q2 = sb.from("follows").select("follower_id,created_at").eq("following_id", state.me.id);
+      if (since) q2 = q2.gt("created_at", since);
+      r = await q2.order("created_at", { ascending: false }).limit(50);
+    }
+    return ((r && r.data) || []).filter((x) => !x.status || x.status === "accepted");
+  }
+  async function loadFollowNotifs() {
+    if (!sb || !state.me) { state.followNotifs = []; return; }
+    try {
+      const rows = await fetchFollowers(null);
+      const ids = rows.map((x) => x.follower_id);
+      if (!ids.length) { state.followNotifs = []; return; }
+      const { data } = await sb.from("profiles").select("id,username,name,color,avatar_url,is_private").in("id", ids);
+      const byId = new Map((data || []).map((u) => [u.id, u]));
+      state.followNotifs = rows.filter((x) => byId.has(x.follower_id)).map((x) => ({ created_at: x.created_at, user: byId.get(x.follower_id) }));
+    } catch { state.followNotifs = []; }
   }
   function renderNotifBadge() {
     const n = state.me ? state.notifCount + state.requests.length : 0;
@@ -1980,6 +2036,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (current) state.following.delete(id); else state.following.set(id, status);
     if (status === "pending") toast(t("requestSent"));
     renderFollow();
+    if (state.view === "notifications") renderTimeline();
     if (state.view === "profile" && state.profileId === id) {
       const before = state.profile && state.profile.canSee;
       await loadProfile();
@@ -2029,6 +2086,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     ls.set("komu:theme", next);
   });
 
+  setInterval(() => { if (state.me && state.view !== "notifications") loadNotifCount(); }, 60000);
   setInterval(() => $$("#timeline time").forEach((el) => (el.textContent = timeAgo(Date.parse(el.getAttribute("datetime"))))), 60000);
 
   /* ---------------- Início ---------------- */
