@@ -235,6 +235,7 @@
   .media-video { width: 100%; max-height: 520px; border-radius: 16px; background: #000; display: block; margin: 4px 0 10px; border: 1px solid var(--border); }
   .media-gif::after { content: "GIF"; position: absolute; left: 8px; bottom: 8px; background: rgba(0,0,0,.7); color: #fff; font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px; pointer-events: none; }
   .sticker { width: 160px; height: 160px; object-fit: contain; display: block; margin: 4px 0 10px; }
+  .pack-gif { width: 240px; height: 240px; border-radius: 18px; display: block; margin: 4px 0 10px; cursor: zoom-in; }
 
   .actions { display: flex; justify-content: space-between; max-width: 425px; margin-left: -8px; }
   .action { display: flex; align-items: center; gap: 2px; color: var(--text-muted); font-size: 13px; }
@@ -421,8 +422,8 @@
   .lib-bar { display: flex; gap: 8px; padding: 12px 16px; align-items: center; }
   .lib-bar input { flex: 1; min-width: 0; padding: 10px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-soft); color: var(--text); outline: none; }
   .lib-bar input:focus { border-color: var(--accent); }
-  .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; padding: 0 16px 16px; }
-  .lib-item { aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--bg-soft); border: 2px solid transparent; }
+  .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; padding: 0 16px 16px; }
+  .lib-item { aspect-ratio: 1; width: 100%; min-width: 0; padding: 0; border-radius: 10px; overflow: hidden; background: var(--bg-soft); border: 2px solid transparent; }
   .lib-item:hover { border-color: var(--accent); }
   .lib-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .lib-item.sticker img { object-fit: contain; padding: 6px; }
@@ -439,6 +440,29 @@
   .dropdown button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; font-weight: 700; text-align: left; }
   .dropdown button:hover { background: var(--bg-hover); }
   .dropdown .danger { color: var(--danger); }
+
+  .lib-cats { display: flex; gap: 6px; padding: 0 16px 10px; overflow-x: auto; scrollbar-width: none; }
+  .lib-cats::-webkit-scrollbar { display: none; }
+  .lib-cats button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); font-size: 13px; font-weight: 600; white-space: nowrap; color: var(--text-muted); }
+  .lib-cats button.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .lib-item.gif img { object-fit: contain; }
+  .stat { color: var(--text-muted); }
+  .stat:hover { text-decoration: underline; }
+  .stat b { color: var(--text); }
+  .sub-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .sub-tabs button { flex: 1; padding: 14px 0; color: var(--text-muted); font-weight: 600; position: relative; }
+  .sub-tabs button:hover { background: var(--bg-hover); }
+  .sub-tabs button.on { color: var(--text); font-weight: 700; }
+  .sub-tabs button.on::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 56px; height: 4px; border-radius: 4px; background: var(--accent); }
+  .like-row { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .like-row .nf-icon { width: 40px; display: flex; justify-content: center; color: #f0386b; flex-shrink: 0; }
+  .like-row .nf-icon svg { width: 26px; height: 26px; fill: currentColor; }
+  .like-row .nf-body { flex: 1; min-width: 0; }
+  .like-row .quote { margin-top: 8px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .like-row .quote .post { border: none; padding: 10px 12px; animation: none; }
+  .forgot-link { display: block; margin: 8px 0 0 auto; font-size: 14px; color: var(--accent); font-weight: 600; }
+  #authForm[data-mode="signup"] .login-only { display: none; }
+  .st-hint { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent); color: var(--on-accent); padding: 12px 20px; border-radius: 8px; font-weight: 500; opacity: 0; pointer-events: none; transition: all .25s; z-index: 95; max-width: calc(100vw - 32px); text-align: center; }
   .toast.show { opacity: 1; transform: translateX(-50%); }
@@ -611,6 +635,7 @@
           <div class="field"><label for="auEmail" data-i18n="email"></label><input id="auEmail" type="email" autocomplete="email"></div>
           <div class="field"><label for="auPass" data-i18n="password"></label><input id="auPass" type="password" autocomplete="current-password">
             <ul class="pw-rules signup-only" id="pwRules"></ul>
+            <button type="button" class="forgot-link login-only" id="forgotLink" data-i18n="forgotPw"></button>
           </div>
           <p class="form-msg" id="authMsg"></p>
           <button type="button" class="link-btn" id="resendFromLogin" data-i18n="resendEmail" hidden></button>
@@ -625,6 +650,28 @@
         <p class="form-msg" id="checkMsg" style="text-align:center"></p>
         <div class="modal-footer"><button class="btn-primary" type="button" id="checkDone" data-i18n="checkDone"></button></div>
         <button type="button" class="link-btn" id="checkResend" data-i18n="resendEmail"></button>
+      </div>
+
+      <div id="authStepForgot" hidden>
+        <h2 data-i18n="forgotTitle"></h2>
+        <p class="lead" data-i18n="forgotText"></p>
+        <form id="forgotForm" novalidate>
+          <div class="field"><label for="fgEmail" data-i18n="email"></label><input id="fgEmail" type="email" autocomplete="email"></div>
+          <p class="form-msg" id="fgMsg"></p>
+          <div class="modal-footer"><button class="btn-primary" type="submit" id="fgSubmit" data-i18n="sendLink"></button></div>
+        </form>
+        <button type="button" class="link-btn" id="fgBack" data-i18n="backToLogin"></button>
+      </div>
+
+      <div id="authStepReset" hidden>
+        <h2 data-i18n="resetTitle"></h2>
+        <p class="lead" data-i18n="resetText"></p>
+        <form id="resetForm" novalidate>
+          <div class="field"><label for="rsPass" data-i18n="newPassword"></label><input id="rsPass" type="password" autocomplete="new-password"><ul class="pw-rules" id="rsRules"></ul></div>
+          <div class="field"><label for="rsPass2" data-i18n="confirmPassword"></label><input id="rsPass2" type="password" autocomplete="new-password"></div>
+          <p class="form-msg" id="rsMsg"></p>
+          <div class="modal-footer"><button class="btn-primary" type="submit" id="rsSubmit" data-i18n="saveNewPw"></button></div>
+        </form>
       </div>
 
       <div id="authStepMfa" hidden>
@@ -668,6 +715,7 @@
       <input type="file" id="fileCover" accept="image/jpeg,image/png,image/webp" hidden>
 
       <div class="field"><label for="stName" data-i18n="name"></label><input id="stName" maxlength="40"></div>
+      <div class="field"><label for="stUser" data-i18n="username"></label><input id="stUser" maxlength="20" autocapitalize="off" autocomplete="off" spellcheck="false"><p class="st-hint" data-i18n="usernameHint"></p></div>
       <div class="field"><label data-i18n="avatarColor"></label><div class="colors" id="stColors"></div></div>
       <p class="form-msg" id="stMsg" style="padding:0 16px"></p>
 
@@ -685,6 +733,14 @@
         <div class="field"><label data-i18n="email"></label><input id="stEmail" readonly></div>
         <div class="pwbox" id="stPw"></div>
         <div class="twofa" id="st2fa"></div>
+      </section>
+
+      <section class="st-section">
+        <h3 data-i18n="notifications"></h3>
+        <label class="switch-row" for="stPush">
+          <div><b data-i18n="browserNotif"></b><p data-i18n="browserNotifDesc"></p></div>
+          <input type="checkbox" class="switch" id="stPush">
+        </label>
       </section>
     </div>
 
@@ -740,6 +796,7 @@
       <input id="libSearch" type="search" data-i18n-ph="libSearchPh">
       <button class="btn-outline btn-sm" id="libAddToggle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="libAdd"></span></button>
     </div>
+    <div class="lib-cats" id="libCats"></div>
     <div class="lib-add" id="libAdd" hidden>
       <div class="row">
         <input type="text" id="libTags" maxlength="80" data-i18n-ph="libTagsPh">
@@ -799,6 +856,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     "komu:punho-circulo": "data:image/webp;base64,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",
     "komu:logo": "data:image/webp;base64,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",
   };
+
+  // Pacotão KOMU: figurinhas e GIFs que ficam na pasta "pacote/" do site
+  const PACK = [{"id": "foice-martelo", "k": "sticker", "c": "esquerda", "t": "foice martelo comunismo socialismo"}, {"id": "estrela-vermelha", "k": "sticker", "c": "esquerda", "t": "estrela vermelha socialismo"}, {"id": "uni-vos", "k": "sticker", "c": "esquerda", "t": "proletarios trabalhadores uni-vos marx"}, {"id": "camarada", "k": "sticker", "c": "esquerda", "t": "camarada companheiro"}, {"id": "socialismo-ou-barbarie", "k": "sticker", "c": "esquerda", "t": "socialismo barbarie rosa luxemburgo"}, {"id": "poder-popular", "k": "sticker", "c": "esquerda", "t": "poder popular povo punho"}, {"id": "bandeira-vermelha", "k": "sticker", "c": "esquerda", "t": "bandeira vermelha"}, {"id": "faz-o-l", "k": "sticker", "c": "lula", "t": "faz o l lula"}, {"id": "lula-estrela", "k": "sticker", "c": "lula", "t": "lula estrela presidente"}, {"id": "lula-la", "k": "sticker", "c": "lula", "t": "lula la"}, {"id": "companheiro-lula", "k": "sticker", "c": "lula", "t": "companheiro lula"}, {"id": "vem-pra-rua", "k": "sticker", "c": "manifestacoes", "t": "vem pra rua manifestacao megafone protesto"}, {"id": "greve-geral", "k": "sticker", "c": "manifestacoes", "t": "greve geral trabalhadores protesto"}, {"id": "povo-unido", "k": "sticker", "c": "manifestacoes", "t": "o povo unido jamais sera vencido protesto"}, {"id": "ninguem-solta", "k": "sticker", "c": "manifestacoes", "t": "ninguem solta a mao de ninguem uniao"}, {"id": "a-luta", "k": "sticker", "c": "manifestacoes", "t": "a luta punho resistencia"}, {"id": "resistencia", "k": "sticker", "c": "manifestacoes", "t": "resistencia resistir"}, {"id": "fora-fascismo", "k": "sticker", "c": "manifestacoes", "t": "antifascista fascismo nunca mais democracia"}, {"id": "bom-dia-camarada", "k": "sticker", "c": "geral", "t": "bom dia camarada"}, {"id": "boa-noite", "k": "sticker", "c": "geral", "t": "boa noite lua dormir"}, {"id": "kkkk", "k": "sticker", "c": "geral", "t": "kkkk risada rindo haha"}, {"id": "concordo", "k": "sticker", "c": "geral", "t": "concordo sim isso"}, {"id": "falou-tudo", "k": "sticker", "c": "geral", "t": "falou tudo verdade exatamente"}, {"id": "valeu", "k": "sticker", "c": "geral", "t": "valeu obrigado obrigada obrigade"}, {"id": "sextou", "k": "sticker", "c": "geral", "t": "sextou sexta feira"}, {"id": "parabens", "k": "sticker", "c": "geral", "t": "parabens aniversario comemorar"}, {"id": "coracao-vermelho", "k": "sticker", "c": "geral", "t": "coracao amor vermelho"}, {"id": "gif-bandeira", "k": "gif", "c": "esquerda", "t": "bandeira vermelha tremulando"}, {"id": "gif-punho", "k": "gif", "c": "manifestacoes", "t": "punho a luta resistencia pulsando"}, {"id": "gif-estrela", "k": "gif", "c": "esquerda", "t": "estrela vermelha girando"}, {"id": "gif-greve", "k": "gif", "c": "manifestacoes", "t": "greve geral piscando"}, {"id": "gif-vem-pra-rua", "k": "gif", "c": "manifestacoes", "t": "vem pra rua megafone manifestacao"}, {"id": "gif-faz-o-l", "k": "gif", "c": "lula", "t": "faz o l lula"}, {"id": "gif-lula-la", "k": "gif", "c": "lula", "t": "lula la estrelas"}, {"id": "gif-povo-unido", "k": "gif", "c": "manifestacoes", "t": "o povo unido jamais sera vencido letreiro"}, {"id": "gif-kkkk", "k": "gif", "c": "geral", "t": "kkkk risada rindo"}, {"id": "gif-bom-dia", "k": "gif", "c": "geral", "t": "bom dia sol camarada"}, {"id": "gif-coracao", "k": "gif", "c": "geral", "t": "coracao amor batendo"}, {"id": "gif-foice-martelo", "k": "gif", "c": "esquerda", "t": "foice martelo brilho comunismo"}, {"id": "gif-parabens", "k": "gif", "c": "geral", "t": "parabens confete comemorar"}];
+  const PACK_IDS = new Set(PACK.map((x) => x.id));
 
   /* =================================================================
      Idiomas
@@ -892,7 +953,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       dmError: "Não foi possível enviar a mensagem.", you: "Você: ",
       library: "Biblioteca da comunidade", libSearchPh: "Buscar por palavra (ex.: feliz, gol)", libAdd: "Adicionar",
       libTagsPh: "Palavras para achar depois (ex.: feliz, comemorar)", libChoose: "Escolher arquivo",
-      libNoteGif: "GIFs enviados pela comunidade. Toque em um para usar no post.",
+      libNoteGif: "GIFs da KOMU e da comunidade. Toque em um para usar no post.",
       libNoteSticker: "Figurinhas da KOMU e da comunidade. Toque em uma para usar no post.",
       libEmpty: "Nada aqui ainda. Que tal adicionar o primeiro?", libAdded: "Adicionado à biblioteca da comunidade!",
       libBadType: "Para GIFs use arquivos .gif; para figurinhas use .png, .webp ou .gif.",
@@ -905,6 +966,23 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       configureFirst: "Configure o Supabase primeiro (veja o README)",
       setupTitle: "Falta conectar o banco de dados",
       setupText: "Preencha SUPABASE_URL e SUPABASE_KEY no começo do script do index.html.",
+      forgotPw: "Esqueci minha senha", forgotTitle: "Recuperar senha",
+      forgotText: "Digite o e-mail da sua conta. Vamos enviar um link para você criar uma senha nova.",
+      sendLink: "Enviar link", backToLogin: "Voltar para o login",
+      forgotSent: "Pronto! Se existir uma conta com esse e-mail, o link chega em alguns minutos. Confira também o spam.",
+      resetTitle: "Crie uma senha nova", resetText: "Escolha uma senha forte para a sua conta.", saveNewPw: "Salvar nova senha",
+      pwReset: "Senha alterada! Você já está dentro da sua conta.",
+      usernameHint: "Ao trocar o @, marcações antigas com o @ anterior deixam de levar ao seu perfil.",
+      likesReceived: "Recebidas", likesGiven: "Que eu curti", likedYourPost: "{name} curtiu seu post",
+      emptyLikesRecT: "Nenhuma curtida ainda", emptyLikesRecD: "Quando alguém curtir um post seu, aparece aqui.",
+      emptyFollowersT: "Ninguém por aqui ainda", emptyFollowersD: "Quando houver pessoas, elas aparecem aqui.",
+      followsYou: "Segue você",
+      newLike: "{name} curtiu seu post", newLikeGeneric: "Nova curtida no seu post", newMessage: "Nova mensagem",
+      browserNotif: "Notificações no navegador",
+      browserNotifDesc: "Mostra um aviso no computador ou no celular quando chegar mensagem, marcação, curtida ou seguidor (com o site aberto em alguma aba).",
+      notifBlocked: "O navegador bloqueou as notificações. Libere nas permissões do site (cadeado ao lado do endereço).",
+      notifUnsupported: "Este navegador não permite notificações.",
+      catAll: "Todos", catKomu: "KOMU", catEsquerda: "Esquerda", catLula: "Lula", catManif: "Manifestações", catGeral: "Geral", catCommunity: "Comunidade",
     },
     en: {
       home: "Home", explore: "Explore", notifications: "Notifications", messages: "Messages", liked: "Likes", bookmarks: "Bookmarks",
@@ -994,7 +1072,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       dmError: "Couldn't send the message.", you: "You: ",
       library: "Community library", libSearchPh: "Search by word (e.g. happy, goal)", libAdd: "Add",
       libTagsPh: "Words to find it later (e.g. happy, celebrate)", libChoose: "Choose file",
-      libNoteGif: "GIFs shared by the community. Tap one to use it in your post.",
+      libNoteGif: "KOMU and community GIFs. Tap one to use it in your post.",
       libNoteSticker: "KOMU and community stickers. Tap one to use it in your post.",
       libEmpty: "Nothing here yet. Why not add the first one?", libAdded: "Added to the community library!",
       libBadType: "For GIFs use .gif files; for stickers use .png, .webp or .gif.",
@@ -1007,6 +1085,23 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       configureFirst: "Set up Supabase first (see the README)",
       setupTitle: "The database isn't connected yet",
       setupText: "Fill in SUPABASE_URL and SUPABASE_KEY at the top of the script in index.html.",
+      forgotPw: "Forgot my password", forgotTitle: "Reset password",
+      forgotText: "Enter your account email. We'll send you a link to create a new password.",
+      sendLink: "Send link", backToLogin: "Back to log in",
+      forgotSent: "Done! If an account exists for that email, the link arrives in a few minutes. Check your spam folder too.",
+      resetTitle: "Create a new password", resetText: "Choose a strong password for your account.", saveNewPw: "Save new password",
+      pwReset: "Password changed! You're logged in.",
+      usernameHint: "If you change your @, old mentions using the previous @ won't lead to your profile anymore.",
+      likesReceived: "Received", likesGiven: "Liked by me", likedYourPost: "{name} liked your post",
+      emptyLikesRecT: "No likes yet", emptyLikesRecD: "When someone likes your post, it shows up here.",
+      emptyFollowersT: "Nobody here yet", emptyFollowersD: "When there are people, they'll show up here.",
+      followsYou: "Follows you",
+      newLike: "{name} liked your post", newLikeGeneric: "New like on your post", newMessage: "New message",
+      browserNotif: "Browser notifications",
+      browserNotifDesc: "Shows an alert on your computer or phone when a message, mention, like or follower arrives (while the site is open in a tab).",
+      notifBlocked: "Your browser blocked notifications. Allow them in the site permissions (lock icon next to the address).",
+      notifUnsupported: "This browser doesn't support notifications.",
+      catAll: "All", catKomu: "KOMU", catEsquerda: "Left", catLula: "Lula", catManif: "Protests", catGeral: "General", catCommunity: "Community",
     },
   };
 
@@ -1037,6 +1132,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     notifCount: 0, followNotifs: [],
     convos: null, dmWith: null, dmMessages: [], dmUnread: 0,
     mfaPending: false,
+    likesTab: "received", likesReceived: [], likeNotifs: [],
+    followsTab: "followers", followsList: null,
+    recovery: /type=recovery/.test(location.hash),
+    lastDmUnread: null,
   };
   let loadSeq = 0;
   let channels = [];
@@ -1148,14 +1247,20 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   /* =================================================================
      Mídia dos posts
      ================================================================= */
-  const mediaSrc = (url) => (url && url.startsWith("komu:") ? BUILTIN[url] || "" : url);
+  function mediaSrc(url) {
+    if (!url || !url.startsWith("komu:")) return url;
+    if (BUILTIN[url]) return BUILTIN[url];
+    const id = url.slice(5);
+    return PACK_IDS.has(id) ? "pacote/" + id + ".webp" : "";
+  }
   function mediaHTML(media) {
     if (!Array.isArray(media) || !media.length) return "";
     const first = media[0];
     if (first.type === "sticker") return `<img class="sticker" src="${esc(mediaSrc(first.url))}" alt="" loading="lazy">`;
+    if (first.type === "gif" && String(first.url).startsWith("komu:")) return `<img class="pack-gif" src="${esc(mediaSrc(first.url))}" alt="" loading="lazy" data-lightbox="${esc(mediaSrc(first.url))}">`;
     if (first.type === "video") return `<video class="media-video" src="${esc(first.url)}" controls playsinline preload="metadata"></video>`;
     const imgs = media.filter((m) => m.type === "image" || m.type === "gif").slice(0, 4);
-    return `<div class="media-grid n${imgs.length}">${imgs.map((m) => `<div class="${m.type === "gif" ? "media-gif" : ""}"><img src="${esc(m.url)}" alt="" loading="lazy" data-lightbox="${esc(m.url)}"></div>`).join("")}</div>`;
+    return `<div class="media-grid n${imgs.length}">${imgs.map((m) => `<div class="${m.type === "gif" ? "media-gif" : ""}"><img src="${esc(mediaSrc(m.url))}" alt="" loading="lazy" data-lightbox="${esc(mediaSrc(m.url))}"></div>`).join("")}</div>`;
   }
 
   /* =================================================================
@@ -1217,6 +1322,16 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const v = state.view;
     if (v === "messages") return renderMessages();
     if (v === "post") return renderPostView();
+    if (v === "follows") return renderFollowsList();
+    if (v === "liked" && state.me) {
+      const tabs = `<div class="sub-tabs"><button data-likes-tab="received" class="${state.likesTab === "received" ? "on" : ""}">${esc(t("likesReceived"))}</button><button data-likes-tab="given" class="${state.likesTab === "given" ? "on" : ""}">${esc(t("likesGiven"))}</button></div>`;
+      if (state.likesTab === "received") {
+        if (state.loading && !state.likesReceived.length) { tl.innerHTML = tabs + '<div class="spinner"></div>'; return; }
+        tl.innerHTML = tabs + (state.likesReceived.length ? state.likesReceived.map(likeRowHTML).join("") : emptyHTML("emptyLikesRec", false, ICONS.like));
+        return;
+      }
+      state._likesTabsHTML = tabs;
+    } else state._likesTabsHTML = "";
     if (v === "profile") {
       if (state.profile === false) { tl.innerHTML = ""; return; }
       if (state.profile && !state.profile.canSee) {
@@ -1227,7 +1342,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const needLogin = (["liked", "bookmarks", "notifications"].includes(v) || (v === "home" && state.tab === "following")) && !state.me;
     if (needLogin) { tl.innerHTML = emptyHTML("emptyLogin", true); return; }
 
-    let top = "";
+    let top = state._likesTabsHTML || "";
     if (v === "explore") {
       if (!state.query && state.trends && state.trends.length) {
         top = `<div class="section-title">${esc(t("trendsTitle"))}</div><div class="chips">${state.trends.map(([tag]) => `<button class="chip" data-search="${esc(tag)}">${esc(tag)}</button>`).join("")}</div>`;
@@ -1247,8 +1362,9 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
 
     const posts = state.posts.filter((p) => !state.reported.has(p.id));
     const follows = v === "notifications" ? state.followNotifs : [];
-    if (state.loading && !posts.length && !follows.length) { tl.innerHTML = top + '<div class="spinner"></div>'; return; }
-    if (!posts.length && !follows.length) {
+    const likesN = v === "notifications" ? state.likeNotifs : [];
+    if (state.loading && !posts.length && !follows.length && !likesN.length) { tl.innerHTML = top + '<div class="spinner"></div>'; return; }
+    if (!posts.length && !follows.length && !likesN.length) {
       const key = v === "home" ? (state.tab === "following" ? "emptyFollowing" : "emptyHome")
         : { explore: "emptyExplore", liked: "emptyLiked", bookmarks: "emptyBookmarks", profile: "emptyProfile", notifications: "emptyNotif" }[v];
       tl.innerHTML = top + emptyHTML(key);
@@ -1259,6 +1375,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       const items = [
         ...posts.map((p) => ({ at: p.created_at, html: postHTML(p, { notif: p.reply_to_username === myName && !mentions(p.content, myName) ? "reply" : "mention" }) })),
         ...follows.map((f) => ({ at: f.created_at, html: followNotifHTML(f) })),
+        ...likesN.map((l) => ({ at: l.created_at, html: likeRowHTML(l) })),
       ].sort((a, b) => (a.at < b.at ? 1 : -1));
       tl.innerHTML = top + items.map((i) => i.html).join("") + loadMoreHTML();
       return;
@@ -1272,6 +1389,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const v = state.view;
     if (v === "messages") return loadConversations();
     if (v === "post") return loadPostView();
+    if (v === "follows") return loadFollowsList();
+    if (v === "liked" && state.likesTab === "received" && state.me) return loadLikesReceived();
     if (more && state.loading) return;
     const seq = more ? loadSeq : ++loadSeq;
     state.loading = true;
@@ -1303,7 +1422,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         else q = q.in("id", [...set].slice(0, 300));
       } else if (v === "notifications") {
         if (!state.me) skip = true;
-        else { q = notifQuery(q); if (!more) await loadFollowNotifs(); }
+        else { q = notifQuery(q); if (!more) await Promise.all([loadFollowNotifs(), loadLikeNotifs()]); }
       } else if (v === "profile") {
         if (!state.profile || !state.profile.canSee) skip = true;
         else {
@@ -1369,6 +1488,95 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       postHTML(P.main, { main: true }) +
       (state.me ? `<button class="reply-prompt" data-action-reply="${P.main.id}">${avatarHTML(state.me)}<span>${esc(t("replyPh"))}</span><span class="btn-primary">${esc(t("reply"))}</span></button>` : "") +
       (replies.length ? replies.map((p) => postHTML(p)).join("") : `<p class="muted" style="padding:20px 16px">${esc(t("noReplies"))}</p>`);
+  }
+
+  /* ---------------- Curtidas recebidas ---------------- */
+  async function fetchLikesReceived(since, limit = 60) {
+    let q = sb.from("likes").select("user_id,post_id,created_at").eq("post_author_id", state.me.id).neq("user_id", state.me.id);
+    if (since) q = q.gt("created_at", since);
+    const { data, error } = await q.order("created_at", { ascending: false }).limit(limit);
+    if (error) throw error;
+    return data || [];
+  }
+  async function hydrateLikes(rows) {
+    if (!rows.length) return [];
+    const [profs, posts] = await Promise.all([
+      sb.from("profiles").select("id,username,name,color,avatar_url,is_private").in("id", [...new Set(rows.map((r) => r.user_id))]),
+      sb.from("feed").select("*").in("id", [...new Set(rows.map((r) => r.post_id))]),
+    ]);
+    const U = new Map((profs.data || []).map((u) => [u.id, u])), P = new Map((posts.data || []).map((x) => [x.id, x]));
+    return rows.filter((r) => U.has(r.user_id) && P.has(r.post_id)).map((r) => ({ created_at: r.created_at, user: U.get(r.user_id), post: P.get(r.post_id) }));
+  }
+  async function loadLikesReceived() {
+    const seq = ++loadSeq;
+    state.loading = true; state.likesReceived = []; renderTimeline();
+    try {
+      const items = await hydrateLikes(await fetchLikesReceived(null));
+      if (seq !== loadSeq) return;
+      state.likesReceived = items;
+      state.posts = items.map((i) => i.post);
+    } catch (e) { console.error(e); toast(errMsg(t("loadError"), e)); }
+    if (seq === loadSeq) { state.loading = false; renderTimeline(); }
+  }
+  async function loadLikeNotifs() {
+    try { state.likeNotifs = state.me ? await hydrateLikes(await fetchLikesReceived(null, 30)) : []; }
+    catch { state.likeNotifs = []; }
+  }
+  function likeRowHTML(l) {
+    const u = l.user, ts = Date.parse(l.created_at);
+    return `<div class="like-row">
+      <div class="nf-icon">${ICONS.like}</div>
+      <div class="nf-body">
+        <div class="clickable" data-user="${u.id}" style="display:inline-block">${avatarHTML(u)}</div>
+        <div style="margin-top:6px"><b class="clickable" data-user="${u.id}">${esc(u.name)}</b> <span class="muted">· <time datetime="${esc(l.created_at)}">${timeAgo(ts)}</time></span><br>${esc(t("likedYourPost", { name: u.name }))}</div>
+        <div class="quote">${postHTML(l.post, { compact: true })}</div>
+      </div>
+    </div>`;
+  }
+
+  /* ---------------- Seguidores / Seguindo ---------------- */
+  async function loadFollowsList() {
+    const id = state.profileId, tab = state.followsTab;
+    const seq = ++loadSeq;
+    state.followsList = null; renderTimeline();
+    try {
+      if (!state.profile || state.profile.u.id !== id) {
+        const { data: u } = await sb.from("profiles").select("*").eq("id", id).maybeSingle();
+        const isMe = !!state.me && state.me.id === id;
+        state.profile = u ? { u, canSee: !u.is_private || isMe || state.following.get(id) === "accepted" } : false;
+        renderNav();
+      }
+      if (!state.profile || !state.profile.canSee) { state.followsList = []; return renderTimeline(); }
+      const col = tab === "followers" ? "follower_id" : "following_id", other = tab === "followers" ? "following_id" : "follower_id";
+      const { data, error } = await sb.from("follows").select(col + ",created_at").eq(other, id).eq("status", "accepted").order("created_at", { ascending: false }).limit(300);
+      if (error) throw error;
+      const ids = (data || []).map((r) => r[col]);
+      let list = [];
+      if (ids.length) {
+        const { data: profs } = await sb.from("profiles").select("id,username,name,color,avatar_url,is_private").in("id", ids);
+        const U = new Map((profs || []).map((u) => [u.id, u]));
+        list = ids.map((x) => U.get(x)).filter(Boolean);
+      }
+      if (seq !== loadSeq) return;
+      state.followsList = list;
+    } catch (e) { console.error(e); state.followsList = []; toast(errMsg(t("loadError"), e)); }
+    renderTimeline();
+  }
+  function renderFollowsList() {
+    const tl = $("#timeline");
+    const tabs = `<div class="sub-tabs"><button data-follows-tab="followers" class="${state.followsTab === "followers" ? "on" : ""}">${esc(t("followers"))}</button><button data-follows-tab="following" class="${state.followsTab === "following" ? "on" : ""}">${esc(t("followingCount"))}</button></div>`;
+    if (state.profile && !state.profile.canSee) {
+      tl.innerHTML = tabs + `<div class="empty"><div class="big-ico">${ICONS.lock}</div><h2>${esc(t("privateTitle"))}</h2><p>${esc(t("privateText", { u: state.profile.u.username }))}</p></div>`;
+      return;
+    }
+    if (state.followsList === null) { tl.innerHTML = tabs + '<div class="spinner"></div>'; return; }
+    if (!state.followsList.length) { tl.innerHTML = tabs + emptyHTML("emptyFollowers"); return; }
+    tl.innerHTML = tabs + state.followsList.map((u) => `
+      <div class="person">
+        <div class="clickable" data-user="${u.id}">${avatarHTML(u)}</div>
+        <div class="names clickable" data-user="${u.id}"><div style="font-weight:700">${esc(u.name)} ${u.is_private ? lockHTML() : ""}</div><div class="muted">@${esc(u.username)}</div></div>
+        ${state.me && u.id === state.me.id ? "" : followBtnHTML(u.id)}
+      </div>`).join("");
   }
 
   /* ---------------- Assuntos e sugestões ---------------- */
@@ -1457,7 +1665,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
           <h2>${esc(u.name)} ${u.is_private ? lockHTML() : ""}</h2>
           <div class="muted">@${esc(u.username)}</div>
           <div class="muted" style="margin-top:8px">${esc(t("joined", { date: new Date(u.created_at).toLocaleDateString(locale(), { month: "long", year: "numeric" }) }))}</div>
-          <div class="profile-stats"><span><b>${P.following}</b> ${esc(t("followingCount"))}</span><span><b>${P.followers}</b> ${esc(t("followers"))}</span></div>
+          <div class="profile-stats"><button class="stat" data-follows="following"><b>${P.following}</b> ${esc(t("followingCount"))}</button><button class="stat" data-follows="followers"><b>${P.followers}</b> ${esc(t("followers"))}</button></div>
         </div>
       </div>`;
   }
@@ -1509,7 +1717,9 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       const { data } = await notifQuery(sb.from("feed").select("id,author_id,content,reply_to_username,created_at"))
         .gt("created_at", since).order("created_at", { ascending: false }).limit(50);
       const newFollowers = await fetchFollowers(since);
-      state.notifCount = (data || []).filter(isNotifFor).length + newFollowers.length;
+      let newLikes = [];
+      try { newLikes = await fetchLikesReceived(since, 50); } catch {}
+      state.notifCount = (data || []).filter(isNotifFor).length + newFollowers.length + newLikes.length;
     } catch { state.notifCount = 0; }
     renderBadges();
   }
@@ -1533,6 +1743,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (!sb || !state.me) { state.dmUnread = 0; return renderBadges(); }
     const { count } = await sb.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", state.me.id).is("read_at", null);
     state.dmUnread = count || 0;
+    state.lastDmUnread = state.dmUnread;
     renderBadges();
   }
   async function loadConversations() {
@@ -1575,7 +1786,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const now = new Date().toISOString();
     unread.forEach((m) => (m.read_at = now));
     await sb.from("messages").update({ read_at: now }).eq("recipient_id", state.me.id).eq("sender_id", other).is("read_at", null);
-    loadDmUnread();
+    await loadDmUnread();
   }
   function renderMessages() {
     const tl = $("#timeline");
@@ -1640,7 +1851,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   /* =================================================================
      Navegação
      ================================================================= */
-  const currentLoc = () => ({ view: state.view, extra: { profileId: state.profileId, postId: state.postId, dmWith: state.dmWith, query: state.query } });
+  const currentLoc = () => ({ view: state.view, extra: { profileId: state.profileId, postId: state.postId, dmWith: state.dmWith, query: state.query, tab: state.followsTab } });
   async function go(view, extra = {}, isBack = false) {
     if (view === "me") {
       if (!requireAuth()) return;
@@ -1649,12 +1860,14 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (view === "messages" && !state.me && sb) { requireAuth(); return; }
     const cur = currentLoc();
     const same = cur.view === view && cur.extra.profileId === (extra.profileId || null) && cur.extra.postId === (extra.postId || null)
-      && (cur.extra.dmWith && cur.extra.dmWith.id) === (extra.dmWith && extra.dmWith.id);
+      && (cur.extra.dmWith && cur.extra.dmWith.id) === (extra.dmWith && extra.dmWith.id) && (view !== "follows" || cur.extra.tab === extra.tab);
     if (!isBack && !same) { navStack.push(cur); if (navStack.length > 30) navStack.shift(); }
 
+    const keepProfile = view === "follows" && state.profile && state.profile.u && state.profile.u.id === extra.profileId;
     state.view = view;
     state.profileId = extra.profileId || null;
-    state.profile = null;
+    if (!keepProfile) state.profile = null;
+    if (view === "follows") { state.followsTab = extra.tab || "followers"; state.followsList = null; }
     state.postId = extra.postId || null;
     state.dmWith = view === "messages" ? extra.dmWith || null : null;
     state.query = view === "explore" ? extra.query || "" : "";
@@ -1683,16 +1896,17 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       home: t("home"), explore: t("explore"), liked: t("liked"), bookmarks: t("bookmarks"), notifications: t("notifications"),
       messages: state.dmWith ? state.dmWith.name : t("messages"), post: t("postView"),
       profile: state.profile ? state.profile.u.name : t("profile"),
+      follows: state.profile ? state.profile.u.name : t("profile"),
     };
     $("#viewTitle").textContent = titles[v];
     $("#tabs").style.display = v === "home" ? "flex" : "none";
     $("#exploreSearch").hidden = v !== "explore";
-    const showBack = v === "profile" || v === "post" || (v === "messages" && !!state.dmWith);
+    const showBack = v === "profile" || v === "post" || v === "follows" || (v === "messages" && !!state.dmWith);
     $("#backBtn").hidden = !showBack;
     $("#mobileMe").style.display = showBack ? "none" : "";
-    $("#inlineComposer").hidden = !(v === "home" && state.me && sb);
-    $("#loginCta").hidden = !(sb && !state.me && v === "home");
     const isMyProfile = v === "profile" && state.me && state.profileId === state.me.id;
+    $("#inlineComposer").hidden = !((v === "home" || isMyProfile) && state.me && sb);
+    $("#loginCta").hidden = !(sb && !state.me && v === "home");
     $$("[data-go]").forEach((el) => {
       const g = el.dataset.go;
       el.classList.toggle("active", g === v || (g === "me" && isMyProfile));
@@ -1789,6 +2003,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     }
     setupRealtime();
     renderMe(); renderNav();
+    if (state.me && state.recovery) openResetStep();
     if (state.me && state.requests.length) toast(state.requests.length === 1 ? t("newRequests1") : t("newRequestsN", { n: state.requests.length }));
     if (state.me && cameFromEmailConfirm && first) toast(t("emailConfirmed"));
     if (!first) {
@@ -1828,7 +2043,52 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     $("#authStepForm").hidden = step !== "form";
     $("#authStepCheck").hidden = step !== "check";
     $("#authStepMfa").hidden = step !== "mfa";
+    $("#authStepForgot").hidden = step !== "forgot";
+    $("#authStepReset").hidden = step !== "reset";
   }
+  function openResetStep() {
+    showAuthStep("reset");
+    $("#rsPass").value = ""; $("#rsPass2").value = ""; msg("#rsMsg", "");
+    renderResetRules();
+    if (!$("#authModal").classList.contains("open")) openModal($("#authModal"));
+    setTimeout(() => $("#rsPass").focus(), 30);
+  }
+  function renderResetRules() {
+    const email = state.session && state.session.user && state.session.user.email;
+    const c = pwChecks($("#rsPass").value, { user: state.me && state.me.username, email });
+    $("#rsRules").innerHTML = pwRulesHTML(c);
+    return c;
+  }
+  $("#rsPass").addEventListener("input", renderResetRules);
+  $("#forgotLink").addEventListener("click", () => {
+    $("#fgEmail").value = $("#auEmail").value.trim(); msg("#fgMsg", "");
+    showAuthStep("forgot"); setTimeout(() => $("#fgEmail").focus(), 30);
+  });
+  $("#fgBack").addEventListener("click", () => { showAuthStep("form"); setAuthMode("login"); });
+  $("#forgotForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = $("#fgEmail").value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) return msg("#fgMsg", t("errEmail"), "error");
+    const btn = $("#fgSubmit"); btn.disabled = true;
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    btn.disabled = false;
+    if (error) return msg("#fgMsg", /rate|seconds/i.test(error.message || "") ? t("resendWait", { s: 60 }) : errMsg(t("errEmailSend"), error), "error");
+    msg("#fgMsg", t("forgotSent"), "ok");
+  });
+  $("#resetForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const p1 = $("#rsPass").value, p2 = $("#rsPass2").value;
+    if (!pwOk(renderResetRules())) return msg("#rsMsg", t("errPassWeak"), "error");
+    if (p1 !== p2) return msg("#rsMsg", t("pwMismatch"), "error");
+    const btn = $("#rsSubmit"); btn.disabled = true;
+    const { error } = await sb.auth.updateUser({ password: p1 });
+    btn.disabled = false;
+    if (error) return msg("#rsMsg", errMsg(t("errGeneric"), error), "error");
+    state.recovery = false;
+    try { history.replaceState({}, "", location.pathname + location.search); } catch {}
+    closeModal($("#authModal"));
+    toast(t("pwReset"));
+  });
   function setAuthMode(mode, keepMsg) {
     $("#authForm").dataset.mode = mode;
     $$("[data-auth]").forEach((b) => b.classList.toggle("on", b.dataset.auth === mode));
@@ -1960,6 +2220,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (!sb) return;
     channels.forEach((c) => sb.removeChannel(c));
     channels = [];
+    // o canal precisa do token de quem está logado, senão o banco não entrega as mensagens privadas
+    if (state.session && sb.realtime && sb.realtime.setAuth) { try { sb.realtime.setAuth(state.session.access_token); } catch {} }
 
     channels.push(sb.channel("posts-" + Date.now())
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "posts" }, async (payload) => {
@@ -1971,7 +2233,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
             const { data } = await sb.from("posts").select("author_id").eq("id", p.reply_to).maybeSingle();
             isNotif = !!data && data.author_id === state.me.id;
           }
-          if (isNotif) onNewNotif(t("newNotif"));
+          if (isNotif) onNewNotif(t("newNotif"), p.content);
         }
         if (state.view === "post" && p.reply_to === state.postId) loadPostView();
         if (p.reply_to) return;
@@ -1989,6 +2251,13 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         } else onNewNotif(t("newFollower"));
       }).subscribe());
 
+    channels.push(sb.channel("likes-" + me + "-" + Date.now())
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "likes", filter: `post_author_id=eq.${me}` }, async (payload) => {
+        if (payload.new.user_id === me) return;
+        const { data: u } = await sb.from("profiles").select("name").eq("id", payload.new.user_id).maybeSingle();
+        onNewNotif(u ? t("newLike", { name: u.name }) : t("newLikeGeneric"));
+      }).subscribe());
+
     channels.push(sb.channel("dm-" + me + "-" + Date.now())
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: `recipient_id=eq.${me}` }, async (payload) => {
         const m = payload.new;
@@ -1997,16 +2266,46 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
           renderTimeline(); markThreadRead(m.sender_id);
           return;
         }
-        state.dmUnread++; renderBadges();
+        state.dmUnread++; state.lastDmUnread = state.dmUnread; renderBadges();
         const { data: u } = await sb.from("profiles").select("name").eq("id", m.sender_id).maybeSingle();
-        toast(t("newMessageFrom", { name: (u && u.name) || "" }));
+        const title = t("newMessageFrom", { name: (u && u.name) || "" });
+        toast(title); browserNotify(title, m.content, "messages");
         if (state.view === "messages" && !state.dmWith) loadConversations();
       }).subscribe());
   }
-  function onNewNotif(text) {
+  function onNewNotif(text, body) {
     if (state.view === "notifications") { markNotifsSeen(); loadTimeline(); }
     else { state.notifCount++; renderBadges(); }
-    toast(text);
+    toast(text); browserNotify(text, body || "", "notifications");
+  }
+
+  // Reserva: confere mensagens novas a cada 20 s, caso o tempo real falhe na rede da pessoa
+  async function pollDms() {
+    if (!sb || !state.me) return;
+    const { count, error } = await sb.from("messages").select("id", { count: "exact", head: true }).eq("recipient_id", state.me.id).is("read_at", null);
+    if (error) return;
+    const prev = state.lastDmUnread;
+    state.lastDmUnread = count || 0;
+    if (prev === null || state.lastDmUnread <= prev) { state.dmUnread = state.lastDmUnread; return renderBadges(); }
+    state.dmUnread = state.lastDmUnread; renderBadges();
+    const { data: last } = await sb.from("messages").select("sender_id,content").eq("recipient_id", state.me.id).is("read_at", null).order("created_at", { ascending: false }).limit(1).maybeSingle();
+    if (!last) return;
+    if (state.view === "messages" && state.dmWith && state.dmWith.id === last.sender_id) return openThread(state.dmWith);
+    const { data: u } = await sb.from("profiles").select("name").eq("id", last.sender_id).maybeSingle();
+    const title = t("newMessageFrom", { name: (u && u.name) || "" });
+    toast(title); browserNotify(title, last.content, "messages");
+    if (state.view === "messages" && !state.dmWith) loadConversations();
+  }
+  setInterval(pollDms, 20000);
+
+  // Notificações do sistema (aparecem mesmo com a aba em segundo plano)
+  const pushOn = () => ls.get("komu:push") === "1" && "Notification" in window && Notification.permission === "granted";
+  function browserNotify(title, body, view) {
+    if (!pushOn() || !document.hidden) return;
+    try {
+      const n = new Notification(title, { body: (body || "").slice(0, 140), icon: "favicon.png", tag: "komu-" + view });
+      n.onclick = () => { window.focus(); go(view); n.close(); };
+    } catch {}
   }
 
   /* =================================================================
@@ -2023,6 +2322,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (m) {
       draft = { name: m.name, color: m.color, avatar_url: m.avatar_url || null, cover_url: m.cover_url || null, uploads: [] };
       $("#stName").value = m.name;
+      $("#stUser").value = m.username;
+      $("#stPush").checked = pushOn();
       $("#stEmail").value = (state.session && state.session.user && state.session.user.email) || "";
       $("#stPrivate").checked = !!m.is_private;
       msg("#stMsg", "");
@@ -2112,14 +2413,33 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       .filter((p) => p && p.startsWith(state.me.id + "/"));
     if (paths.length) sb.storage.from("media").remove(paths).catch(() => {});
   }
+  $("#stPush").addEventListener("change", async (e) => {
+    if (!e.target.checked) { ls.set("komu:push", "0"); return; }
+    if (!("Notification" in window)) { e.target.checked = false; return toast(t("notifUnsupported")); }
+    const perm = Notification.permission === "default" ? await Notification.requestPermission() : Notification.permission;
+    if (perm !== "granted") { e.target.checked = false; ls.set("komu:push", "0"); return toast(t("notifBlocked")); }
+    ls.set("komu:push", "1");
+  });
   $("#stSave").addEventListener("click", async () => {
     const name = $("#stName").value.trim();
     if (!name) return msg("#stMsg", t("errName"), "error");
+    const username = $("#stUser").value.trim().toLowerCase().replace(/^@/, "");
+    if (!/^[a-z0-9_]{3,20}$/.test(username)) return msg("#stMsg", t("errUser"), "error");
     const upd = { name, color: draft.color, is_private: $("#stPrivate").checked, avatar_url: draft.avatar_url, cover_url: draft.cover_url };
+    if (username !== state.me.username) {
+      const { data: taken } = await sb.from("profiles").select("id").eq("username", username).neq("id", state.me.id).maybeSingle();
+      if (taken) return msg("#stMsg", t("errUserTaken"), "error");
+      upd.username = username;
+    }
     $("#stSave").disabled = true;
     const { error } = await sb.from("profiles").update(upd).eq("id", state.me.id);
     $("#stSave").disabled = false;
-    if (error) { console.error(error); return msg("#stMsg", errMsg(t("saveError"), error), "error"); }
+    if (error) {
+      console.error(error);
+      if (error.code === "23505") return msg("#stMsg", t("errUserTaken"), "error");
+      if (error.code === "42501" && upd.username) return msg("#stMsg", t("errDbOutdated"), "error");
+      return msg("#stMsg", errMsg(t("saveError"), error), "error");
+    }
     const keep = [upd.avatar_url, upd.cover_url];
     const unused = [state.me.avatar_url, state.me.cover_url, ...draft.uploads].filter((u) => u && !keep.includes(u));
     removeFiles([...new Set(unused)]);
@@ -2569,9 +2889,18 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   /* =================================================================
      Biblioteca da comunidade: GIFs e figurinhas
      ================================================================= */
-  let libKind = "gif", libOnPick = null, libTimer, libItems = [];
+  let libKind = "gif", libOnPick = null, libTimer, libItems = [], libCat = "all";
+  const LIB_CATS = [["all", "catAll"], ["komu", "catKomu"], ["esquerda", "catEsquerda"], ["lula", "catLula"], ["manifestacoes", "catManif"], ["geral", "catGeral"], ["comunidade", "catCommunity"]];
+  function renderLibCats() {
+    $("#libCats").innerHTML = LIB_CATS.filter(([c]) => c !== "komu" || libKind === "sticker")
+      .map(([c, k]) => `<button type="button" data-lib-cat="${c}" class="${libCat === c ? "on" : ""}">${esc(t(k))}</button>`).join("");
+  }
+  $("#libCats").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lib-cat]"); if (!b) return;
+    libCat = b.dataset.libCat; loadLibrary();
+  });
   function openLibrary(kind, onPick) {
-    libKind = kind; libOnPick = onPick;
+    libKind = kind; libOnPick = onPick; libCat = "all";
     $("#libSearch").value = ""; $("#libAdd").hidden = true; msg("#libMsg", "");
     $$("[data-lib-tab]").forEach((b) => b.classList.toggle("on", b.dataset.libTab === kind));
     openModal($("#libModal"));
@@ -2581,13 +2910,30 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const grid = $("#libGrid");
     $("#libNote").textContent = t(libKind === "gif" ? "libNoteGif" : "libNoteSticker");
     $("#libFile").accept = libKind === "gif" ? "image/gif" : "image/png,image/webp,image/gif";
+    if (libCat === "komu" && libKind !== "sticker") libCat = "all";
+    renderLibCats();
     grid.innerHTML = '<div class="spinner" style="grid-column:1/-1"></div>';
     const term = cleanQuery($("#libSearch").value);
-    let q = sb.from("community_media").select("*").eq("kind", libKind).order("created_at", { ascending: false }).limit(90);
-    if (term) q = q.ilike("tags", `%${term}%`);
-    const { data, error } = await q;
-    let items = (data || []).map((d) => ({ kind: d.kind, url: d.url }));
-    if (libKind === "sticker" && !term) items = Object.keys(BUILTIN).map((k) => ({ kind: "sticker", url: k })).concat(items);
+    const norm = (x) => x.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const nterm = norm(term);
+    // pacotão (vem no site)
+    let items = [];
+    if (libCat === "all" || libCat === "komu") {
+      if (libKind === "sticker" && !term) items = Object.keys(BUILTIN).map((k) => ({ kind: "sticker", url: k }));
+    }
+    if (libCat !== "comunidade" && libCat !== "komu") {
+      items = items.concat(PACK.filter((x) => x.k === libKind && (libCat === "all" || x.c === libCat) && (!nterm || norm(x.t + " " + x.id).includes(nterm)))
+        .map((x) => ({ kind: x.k, url: "komu:" + x.id })));
+    }
+    // enviados pela comunidade
+    let error = null;
+    if (libCat === "all" || libCat === "comunidade") {
+      let q = sb.from("community_media").select("*").eq("kind", libKind).order("created_at", { ascending: false }).limit(90);
+      if (term) q = q.ilike("tags", `%${term}%`);
+      const res = await q;
+      error = res.error;
+      items = items.concat((res.data || []).map((d) => ({ kind: d.kind, url: d.url })));
+    }
     libItems = items;
     if (error && !items.length) { grid.innerHTML = `<p class="muted" style="grid-column:1/-1">${esc(errMsg(t("loadError"), error))}</p>`; return; }
     grid.innerHTML = items.length
@@ -2781,6 +3127,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const mention = e.target.closest("[data-username]");
     if (mention) return goToUsername(mention.dataset.username);
     if (e.target.closest("[data-follow], [data-dm], [data-open-settings], [data-open-auth]")) return;
+    const lt = e.target.closest("[data-likes-tab]");
+    if (lt) { state.likesTab = lt.dataset.likesTab; return loadTimeline(); }
+    const ft = e.target.closest("[data-follows-tab]");
+    if (ft) { state.followsTab = ft.dataset.followsTab; return loadFollowsList(); }
     const userEl = e.target.closest("[data-user]");
     if (userEl) return go("profile", { profileId: userEl.dataset.user });
     if (e.target.id === "loadMore") return loadTimeline(true);
@@ -2902,6 +3252,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const u = e.target.closest("#whoToFollow [data-user]"); if (u) return go("profile", { profileId: u.dataset.user });
   });
   $$("[data-tab]").forEach((b) => b.addEventListener("click", () => { state.tab = b.dataset.tab; renderNav(); loadTimeline(); }));
+  $("#profileHead").addEventListener("click", (e) => {
+    const st = e.target.closest("[data-follows]");
+    if (st && state.profile) go("follows", { profileId: state.profile.u.id, tab: st.dataset.follows });
+  });
   $("#mobileMe").addEventListener("click", () => (state.me ? go("me") : requireAuth()));
   $("#backBtn").addEventListener("click", goBack);
   $("#newPosts").addEventListener("click", () => { state.pending = 0; renderNewPosts(); window.scrollTo({ top: 0 }); loadTimeline(); });
@@ -2925,7 +3279,11 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const pid = new URLSearchParams(location.search).get("post");
     if (pid) go("post", { postId: pid }, true); else loadTimeline();
     loadTrends(); loadWhoToFollow();
-    sb.auth.onAuthStateChange(() => { setTimeout(syncAuth, 0); });
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") state.recovery = true;
+      if (session && sb.realtime && sb.realtime.setAuth) { try { sb.realtime.setAuth(session.access_token); } catch {} }
+      setTimeout(syncAuth, 0);
+    });
   }
   init();
 })();
