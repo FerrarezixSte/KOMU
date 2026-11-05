@@ -216,6 +216,9 @@
   .reposted-by svg, .notif-label svg { width: 15px; height: 15px; }
   .notif-label svg { color: var(--accent); }
   .post-text { white-space: pre-wrap; word-wrap: break-word; margin: 2px 0 10px; }
+  .post-text.clamp { display: -webkit-box; -webkit-line-clamp: 10; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 4px; }
+  .show-more { color: var(--accent); font-weight: 600; font-size: 15px; margin: 0 0 10px; }
+  .show-more:hover { text-decoration: underline; }
   .post-text:empty { display: none; }
   .post-text .tag, .post-text .mention { color: var(--accent); cursor: pointer; }
   .post-text .mention:hover, .post-text .tag:hover { text-decoration: underline; }
@@ -294,6 +297,7 @@
   .bubble.me .mention, .bubble.me .tag, .bubble.me a { color: inherit; text-decoration: underline; }
   .bubble-time { font-size: 12px; color: var(--text-muted); margin: 2px 4px 8px; }
   .bubble-time.me { align-self: flex-end; }
+  .bubble-time .seen { color: var(--accent); font-weight: 600; }
   .dm-input { position: sticky; bottom: 0; display: flex; gap: 8px; align-items: flex-end; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--bg); }
   .dm-input textarea { flex: 1; resize: none; border: 1px solid var(--border); border-radius: 20px; padding: 10px 14px; background: var(--bg-soft); color: var(--text); outline: none; max-height: 140px; min-height: 42px; }
   .dm-input textarea:focus { border-color: var(--accent); }
@@ -464,6 +468,39 @@
   #authForm[data-mode="signup"] .login-only { display: none; }
   .st-hint { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
+  /* Portão: KOMU fechada para visitantes */
+  #gate { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+  .gate-box { width: 100%; max-width: 420px; text-align: center; }
+  .gate-box .wordmark { width: 220px; margin: 0 auto 28px; color: var(--accent); }
+  .gate-box h1 { font-size: 30px; font-weight: 800; line-height: 1.15; margin-bottom: 10px; }
+  .gate-box p { color: var(--text-muted); margin-bottom: 24px; }
+  .gate-box .btn-primary, .gate-box .btn-outline { width: 100%; height: 48px; font-size: 16px; justify-content: center; margin-bottom: 10px; }
+  .gate-box .seg { margin-top: 18px; }
+  body.gated .app, body.gated .bottom-nav, body.gated .fab { display: none !important; }
+
+  /* Convites */
+  .inv-status { padding: 0 16px; color: var(--text-muted); font-size: 14px; }
+  .inv-status b { color: var(--text); }
+  .inv-actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 16px; }
+  .inv-new { margin: 4px 16px 10px; padding: 12px; border: 1px dashed var(--accent); border-radius: 12px; display: grid; gap: 8px; }
+  .inv-new .row { display: flex; gap: 8px; }
+  .inv-new input { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-soft); color: var(--text); font-size: 14px; }
+  .inv-group { margin: 4px 16px 10px; padding: 12px; border: 1px solid var(--border); border-radius: 12px; display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+  .inv-group label { font-size: 13px; color: var(--text-muted); display: grid; gap: 4px; }
+  .inv-group input { padding: 9px 10px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text); }
+  .inv-group .full { grid-column: 1 / -1; }
+  .inv-list-title { font-weight: 700; padding: 12px 16px 4px; font-size: 15px; }
+  .inv-row { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-top: 1px solid var(--border); }
+  .inv-row code { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 700; font-size: 14px; letter-spacing: .05em; }
+  .inv-row .meta { flex: 1; min-width: 0; font-size: 13px; color: var(--text-muted); }
+  .inv-row .meta .ok { color: var(--ok); font-weight: 600; }
+  .inv-row .meta .off { color: var(--danger); font-weight: 600; }
+  .inv-row .icon-btn svg { width: 18px; height: 18px; }
+  .invited-by { margin-top: 4px; }
+  .invited-by .mention { color: var(--accent); cursor: pointer; }
+  .invited-by .mention:hover { text-decoration: underline; }
+  .num-input { width: 84px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text); }
+
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent); color: var(--on-accent); padding: 12px 20px; border-radius: 8px; font-weight: 500; opacity: 0; pointer-events: none; transition: all .25s; z-index: 95; max-width: calc(100vw - 32px); text-align: center; }
   .toast.show { opacity: 1; transform: translateX(-50%); }
 
@@ -505,7 +542,7 @@
     .composer-tools { flex-wrap: nowrap; }
     .composer-tools button { width: 32px; height: 32px; }
     .modal-backdrop { padding: 0; }
-    .modal { border-radius: 0; min-height: 100vh; max-height: none; max-width: none; }
+    .modal { border-radius: 0; height: 100vh; height: 100dvh; max-height: none; max-width: none; overscroll-behavior: contain; }
     .profile-cover, .edit-cover { height: 130px; }
     .thread { min-height: calc(100vh - 53px - 54px); }
     .dm-input { bottom: 54px; }
@@ -515,6 +552,18 @@
 </style>
 </head>
 <body>
+
+<!-- Portão: aparece para quem não está logado quando a KOMU está fechada -->
+<div id="gate" hidden>
+  <div class="gate-box">
+    <span class="wordmark" role="img" aria-label="KOMU"></span>
+    <h1 data-i18n="gateTitle"></h1>
+    <p data-i18n="gateText"></p>
+    <button class="btn-primary" data-open-auth data-i18n="login"></button>
+    <button class="btn-outline" id="gateInvite" data-i18n="haveInvite"></button>
+    <div class="seg"><button type="button" data-lang="pt">Português</button><button type="button" data-lang="en">English</button></div>
+  </div>
+</div>
 
 <div class="app">
   <nav class="sidebar" aria-label="KOMU">
@@ -586,7 +635,7 @@
   <span class="avatar" data-me-avatar></span>
   <div class="composer-body">
     <div class="reply-context" hidden></div>
-    <textarea maxlength="400"></textarea>
+    <textarea maxlength="2600"></textarea>
     <div class="att-strip" hidden></div>
     <div class="composer-msg" hidden></div>
     <div class="composer-footer">
@@ -630,6 +679,7 @@
           <button type="button" data-auth="signup" data-i18n="signup"></button>
         </div>
         <form id="authForm" data-mode="login" novalidate>
+          <div class="field signup-only"><label for="auInvite" data-i18n="inviteCode"></label><input id="auInvite" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABCD1234"><p class="form-msg" id="inviteMsg"></p></div>
           <div class="field signup-only"><label for="auName" data-i18n="name"></label><input id="auName" maxlength="40" autocomplete="name"></div>
           <div class="field signup-only"><label for="auUser" data-i18n="username"></label><input id="auUser" maxlength="20" data-i18n-ph="usernamePh" autocomplete="username"></div>
           <div class="field"><label for="auEmail" data-i18n="email"></label><input id="auEmail" type="email" autocomplete="email"></div>
@@ -742,6 +792,16 @@
           <input type="checkbox" class="switch" id="stPush">
         </label>
       </section>
+
+      <section class="st-section">
+        <h3 data-i18n="invites"></h3>
+        <div id="stInvites"></div>
+      </section>
+
+      <section class="st-section" id="stAdmin" hidden>
+        <h3 data-i18n="adminPanel"></h3>
+        <div id="stAdminBox"></div>
+      </section>
     </div>
 
     <section class="st-section" id="stAppearance">
@@ -829,7 +889,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   const CONFIGURED = /^https:\/\/.+/.test(SUPABASE_URL) && !SUPABASE_KEY.startsWith("COLE_AQUI");
   const sb = CONFIGURED && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-  const MAX = 280;
+  const MAX = 2500;
   const PAGE = 30;
   const MAX_IMAGES = 4;
   const MAX_VIDEO_MB = 25;
@@ -966,6 +1026,37 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       configureFirst: "Configure o Supabase primeiro (veja o README)",
       setupTitle: "Falta conectar o banco de dados",
       setupText: "Preencha SUPABASE_URL e SUPABASE_KEY no começo do script do index.html.",
+      showMore: "Mostrar mais", showLess: "Mostrar menos",
+      gateTitle: "A KOMU é uma comunidade só para convidados",
+      gateText: "Para entrar, você precisa de uma conta ou de um convite de alguém que já faz parte.",
+      haveInvite: "Tenho um convite",
+      inviteCode: "Código do convite", inviteNeeded: "A KOMU é só por convite. Peça um link a alguém que já faz parte.",
+      inviteOkFrom: "Convite de {name} (@{u}) ✓", inviteOkGroup: "Convite coletivo de {name} ✓",
+      inviteBad_not_found: "Esse convite não existe. Confira o código.", inviteBad_used: "Esse convite já foi usado.",
+      inviteBad_expired: "Esse convite expirou.", inviteBad_revoked: "Esse convite foi cancelado.",
+      errInviteInvalid: "Não foi possível criar a conta: o convite é inválido ou já foi usado.",
+      alreadyMember: "Você já tem conta na KOMU 🙂",
+      invites: "Convites",
+      invLeft: "Você ainda pode gerar <b>{n}</b> de {q} convites hoje.", invAdmin: "Você é admin: pode gerar convites sem limite e links coletivos.",
+      invExplain: "Cada convite vale para uma pessoa. Fica registrado quem você convidou.",
+      genInvite: "Gerar convite", genGroup: "Gerar link coletivo",
+      invReady: "Convite pronto! Envie este link:", copyLink: "Copiar link", shareLink: "Compartilhar",
+      inviteCopied: "Link do convite copiado", inviteShareText: "Vem pra KOMU! Este é o meu convite:",
+      myInvites: "Meus convites", noInvites: "Você ainda não gerou convites.",
+      invAvailable: "Disponível", invUsedBy: "Usado por", invRevoked: "Cancelado", invExpired: "Expirado", invFull: "Esgotado",
+      invUses: "{u} de {m} usos", invUntil: "até {d}", cancelInvite: "Cancelar convite", confirmCancelInvite: "Cancelar este convite? O link para de funcionar.",
+      invCanceled: "Convite cancelado",
+      groupPeople: "Quantas pessoas", groupDays: "Vale por quantos dias", groupNote: "Nome (ex.: grupo do sindicato)",
+      errQuota: "Você já gerou seus {n} convites de hoje. Amanhã tem mais!", errGroupAdmin: "Só o admin pode gerar links coletivos.",
+      errMfaInvite: "Confirme o código da verificação em duas etapas antes de gerar convites.",
+      invitedBy: "Convidado(a) por",
+      adminPanel: "Painel do admin",
+      admPublic: "Visitantes sem conta podem ler a KOMU", admPublicDesc: "Desligado: quem não tem conta vê só a tela de entrar.",
+      admInviteOnly: "Cadastro só com convite", admInviteOnlyDesc: "Desligado: qualquer pessoa pode criar conta.",
+      admQuota: "Convites por membro, por dia", admSaved: "Configuração salva",
+      allInvites: "Todos os convites (mais recentes)", createdBy: "de",
+
+      sending: "Enviando...", sent: "Enviada", read: "Lida", readAt: "Lida às {time}",
       forgotPw: "Esqueci minha senha", forgotTitle: "Recuperar senha",
       forgotText: "Digite o e-mail da sua conta. Vamos enviar um link para você criar uma senha nova.",
       sendLink: "Enviar link", backToLogin: "Voltar para o login",
@@ -1085,6 +1176,37 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       configureFirst: "Set up Supabase first (see the README)",
       setupTitle: "The database isn't connected yet",
       setupText: "Fill in SUPABASE_URL and SUPABASE_KEY at the top of the script in index.html.",
+      showMore: "Show more", showLess: "Show less",
+      gateTitle: "KOMU is an invite-only community",
+      gateText: "To get in, you need an account or an invite from someone who's already a member.",
+      haveInvite: "I have an invite",
+      inviteCode: "Invite code", inviteNeeded: "KOMU is invite-only. Ask a member for an invite link.",
+      inviteOkFrom: "Invite from {name} (@{u}) ✓", inviteOkGroup: "Group invite from {name} ✓",
+      inviteBad_not_found: "This invite doesn't exist. Check the code.", inviteBad_used: "This invite has already been used.",
+      inviteBad_expired: "This invite has expired.", inviteBad_revoked: "This invite was canceled.",
+      errInviteInvalid: "Couldn't create the account: the invite is invalid or already used.",
+      alreadyMember: "You already have a KOMU account 🙂",
+      invites: "Invites",
+      invLeft: "You can still create <b>{n}</b> of {q} invites today.", invAdmin: "You're an admin: unlimited invites and group links.",
+      invExplain: "Each invite works for one person. Who you invited is recorded.",
+      genInvite: "Create invite", genGroup: "Create group link",
+      invReady: "Invite ready! Send this link:", copyLink: "Copy link", shareLink: "Share",
+      inviteCopied: "Invite link copied", inviteShareText: "Join me on KOMU! Here's my invite:",
+      myInvites: "My invites", noInvites: "You haven't created invites yet.",
+      invAvailable: "Available", invUsedBy: "Used by", invRevoked: "Canceled", invExpired: "Expired", invFull: "Full",
+      invUses: "{u} of {m} uses", invUntil: "until {d}", cancelInvite: "Cancel invite", confirmCancelInvite: "Cancel this invite? The link will stop working.",
+      invCanceled: "Invite canceled",
+      groupPeople: "How many people", groupDays: "Valid for how many days", groupNote: "Name (e.g. union group)",
+      errQuota: "You've used your {n} invites for today. More tomorrow!", errGroupAdmin: "Only the admin can create group links.",
+      errMfaInvite: "Confirm your two-step verification code before creating invites.",
+      invitedBy: "Invited by",
+      adminPanel: "Admin panel",
+      admPublic: "Visitors without an account can read KOMU", admPublicDesc: "Off: people without an account only see the log-in screen.",
+      admInviteOnly: "Sign-up by invite only", admInviteOnlyDesc: "Off: anyone can create an account.",
+      admQuota: "Invites per member, per day", admSaved: "Setting saved",
+      allInvites: "All invites (latest)", createdBy: "by",
+
+      sending: "Sending...", sent: "Sent", read: "Seen", readAt: "Seen at {time}",
       forgotPw: "Forgot my password", forgotTitle: "Reset password",
       forgotText: "Enter your account email. We'll send you a link to create a new password.",
       sendLink: "Send link", backToLogin: "Back to log in",
@@ -1136,7 +1258,16 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     followsTab: "followers", followsList: null,
     recovery: /type=recovery/.test(location.hash),
     lastDmUnread: null,
+    settings: null,                  // site_settings: public_read, invite_only, invite_quota
+    inviteCode: null, inviteCheck: null,
   };
+  // código vindo do link de convite (?convite=XXXXXXXX)
+  {
+    const fromUrl = new URLSearchParams(location.search).get("convite");
+    let saved = null; try { saved = sessionStorage.getItem("komu:invite"); } catch {}
+    const code = (fromUrl || saved || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
+    if (code) { state.inviteCode = code; try { sessionStorage.setItem("komu:invite", code); } catch {} }
+  }
   let loadSeq = 0;
   let channels = [];
   const navStack = [];
@@ -1207,6 +1338,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   function errMsg(base, e) {
     const m = (e && (e.message || e.error_description || e.error || e.msg)) || "";
     if (/bucket not found/i.test(m)) return t("errNoBucket");
+    if (/KOMU_QUOTA/.test(m)) return t("errQuota", { n: (state.settings && state.settings.invite_quota) || 13 });
+    if (/KOMU_GROUP_ADMIN_ONLY/.test(m)) return t("errGroupAdmin");
+    if (/KOMU_MFA_REQUIRED/.test(m)) return t("errMfaInvite");
+    if (/KOMU_INVITE_INVALID/.test(m)) return t("errInviteInvalid");
     if ((e && ["42703", "PGRST204", "42P01", "PGRST200", "PGRST205"].includes(e.code)) || /column .* does not exist|schema cache|relation .* does not exist/i.test(m)) return t("errDbOutdated");
     if (/mfa|totp|factor/i.test(m) && /disabled|not enabled/i.test(m)) return t("errMfaOff");
     if (/payload too large|maximum allowed size|too large/i.test(m)) return t("fileTooBig", { mb: MAX_VIDEO_MB });
@@ -1266,6 +1401,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   /* =================================================================
      Posts
      ================================================================= */
+  const isLong = (text) => !!text && (text.length > 600 || (text.match(/\n/g) || []).length > 9);
   function postHTML(p, opts = {}) {
     const ts = Date.parse(p.created_at);
     const liked = state.liked.has(p.id), reposted = state.reposted.has(p.id), saved = state.bookmarked.has(p.id);
@@ -1284,7 +1420,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
             ${opts.compact ? "" : `<button class="post-menu" data-action="menu" aria-label="${esc(t("more"))}">${ICONS.more}</button>`}
           </div>
           ${p.reply_to_username && !opts.compact ? `<div class="replying-to">${esc(t("replyingTo"))} <span class="mention" data-username="${esc(p.reply_to_username)}">@${esc(p.reply_to_username)}</span></div>` : ""}
-          <div class="post-text">${richText(p.content || "")}</div>
+          <div class="post-text ${isLong(p.content) && !opts.main ? "clamp" : ""}">${richText(p.content || "")}</div>
+          ${isLong(p.content) && !opts.main ? `<button class="show-more" data-action="expand">${esc(t("showMore"))}</button>` : ""}
           ${mediaHTML(p.media)}
           ${opts.compact ? "" : `
           <div class="actions">
@@ -1310,7 +1447,19 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   const loadMoreHTML = () => (state.hasMore ? `<button class="load-more" id="loadMore">${esc(t(state.loading ? "loading" : "loadMore"))}</button>` : "");
 
   /* ---------------- Renderização principal ---------------- */
+  function renderGate() {
+    const closed = !!sb && !state.me && !!state.settings && !state.settings.public_read;
+    document.body.classList.toggle("gated", closed);
+    $("#gate").hidden = !closed;
+  }
+  async function loadSettings() {
+    let data = null, error = null;
+    try { ({ data, error } = await sb.from("site_settings").select("*").eq("id", 1).maybeSingle()); } catch (e) { error = e; }
+    // banco ainda sem convites: comporta-se como antes (aberto, sem convite)
+    state.settings = error || !data ? { public_read: true, invite_only: false, invite_quota: 13, legacy: true } : data;
+  }
   function renderAll() {
+    renderGate();
     renderMe(); renderNav(); renderProfileHead(); renderTimeline();
     renderTrends(); renderFollow(); renderNewPosts(); renderBadges();
   }
@@ -1641,7 +1790,16 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       state.profileReposts = (reps.data || []).map((r) => r.post_id);
     }
     if (id !== state.profileId) return;
-    state.profile = { u, followers: followers.count ?? 0, following: following.count ?? 0, canSee };
+    let invitedBy = null;
+    if (state.me) {
+      const iu = await sb.from("invite_uses").select("invited_by").eq("user_id", id).maybeSingle();
+      if (iu.data && iu.data.invited_by) {
+        const { data: by } = await sb.from("profiles").select("id,username").eq("id", iu.data.invited_by).maybeSingle();
+        invitedBy = by || null;
+      }
+    }
+    if (id !== state.profileId) return;
+    state.profile = { u, followers: followers.count ?? 0, following: following.count ?? 0, canSee, invitedBy };
     renderProfileHead(); renderNav();
   }
 
@@ -1665,6 +1823,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
           <h2>${esc(u.name)} ${u.is_private ? lockHTML() : ""}</h2>
           <div class="muted">@${esc(u.username)}</div>
           <div class="muted" style="margin-top:8px">${esc(t("joined", { date: new Date(u.created_at).toLocaleDateString(locale(), { month: "long", year: "numeric" }) }))}</div>
+          ${P.invitedBy ? `<div class="muted invited-by">${esc(t("invitedBy"))} <span class="mention" data-user="${P.invitedBy.id}">@${esc(P.invitedBy.username)}</span></div>` : ""}
           <div class="profile-stats"><button class="stat" data-follows="following"><b>${P.following}</b> ${esc(t("followingCount"))}</button><button class="stat" data-follows="followers"><b>${P.followers}</b> ${esc(t("followers"))}</button></div>
         </div>
       </div>`;
@@ -1800,7 +1959,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
           ${avatarHTML(c.user)}
           <div class="names">
             <div><b>${esc(c.user.name)}</b> <span class="muted">@${esc(c.user.username)} · ${timeAgo(Date.parse(c.last.created_at))}</span></div>
-            <div class="last">${mine ? esc(t("you")) : ""}${esc(c.last.content)}</div>
+            <div class="last">${mine ? esc(t("you")) : ""}${esc(c.last.content)}${mine && c.last.read_at ? ` <span class="seen" style="color:var(--accent)">· ✓✓ ${esc(t("read"))}</span>` : ""}</div>
           </div>
           ${c.unread ? '<span class="unread-dot"></span>' : ""}
         </button>`;
@@ -1810,11 +1969,21 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     const u = state.dmWith;
     const list = state.dmMessages;
     const draftText = ($("#dmText") || {}).value || "";
+    // índice da última mensagem que EU enviei: embaixo dela aparece "Enviada" ou "Lida"
+    let lastMine = -1;
+    (list || []).forEach((m, i) => { if (m.sender_id === state.me.id) lastMine = i; });
+    const hhmm = (iso) => new Date(iso).toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" });
     const bubbles = list === null ? '<div class="spinner"></div>' : list.map((m, i) => {
       const mine = m.sender_id === state.me.id;
       const next = list[i + 1];
       const showTime = !next || next.sender_id !== m.sender_id || Date.parse(next.created_at) - Date.parse(m.created_at) > 5 * min;
-      return `<div class="bubble ${mine ? "me" : ""}">${richText(m.content)}</div>${showTime ? `<div class="bubble-time ${mine ? "me" : ""}">${timeAgo(Date.parse(m.created_at))}</div>` : ""}`;
+      let status = "";
+      if (i === lastMine) {
+        status = m.read_at
+          ? ` · <span class="seen">✓✓ ${esc(t("readAt", { time: hhmm(m.read_at) }))}</span>`
+          : ` · ✓ ${esc(t(String(m.id).startsWith("tmp") ? "sending" : "sent"))}`;
+      }
+      return `<div class="bubble ${mine ? "me" : ""}">${richText(m.content)}</div>${showTime || status ? `<div class="bubble-time ${mine ? "me" : ""}">${timeAgo(Date.parse(m.created_at))}${status}</div>` : ""}`;
     }).join("");
     tl.innerHTML = `<div class="thread">
       <div class="thread-head clickable" data-user="${u.id}">${avatarHTML(u)}<b>${esc(u.name)}</b><span class="muted">@${esc(u.username)}</span></div>
@@ -1838,6 +2007,7 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       return toast(/row-level security/i.test(error.message || "") ? t("dmNotAllowed") : errMsg(t("dmError"), error));
     }
     Object.assign(temp, data);
+    if (state.view === "messages" && state.dmWith) renderTimeline();
   }
   function startDM(userId) {
     if (!requireAuth()) return;
@@ -2004,6 +2174,11 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     setupRealtime();
     renderMe(); renderNav();
     if (state.me && state.recovery) openResetStep();
+    renderGate();
+    if (state.inviteCode) {
+      if (state.me) { if (first && !state.recovery) toast(t("alreadyMember")); clearInvite(); }
+      else if (first && !state.mfaPending && !state.recovery) openAuth("signup");
+    }
     if (state.me && state.requests.length) toast(state.requests.length === 1 ? t("newRequests1") : t("newRequestsN", { n: state.requests.length }));
     if (state.me && cameFromEmailConfirm && first) toast(t("emailConfirmed"));
     if (!first) {
@@ -2013,6 +2188,30 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       loadWhoToFollow();
     }
   }
+
+  /* ---- Convite no cadastro ---- */
+  function clearInvite() {
+    state.inviteCode = null;
+    try { sessionStorage.removeItem("komu:invite"); } catch {}
+    const q = new URLSearchParams(location.search);
+    if (q.has("convite")) { q.delete("convite"); const rest = q.toString(); try { history.replaceState({}, "", location.pathname + (rest ? "?" + rest : "")); } catch {} }
+  }
+  let inviteTimer;
+  async function checkInviteField() {
+    const code = $("#auInvite").value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
+    if ($("#auInvite").value !== code) $("#auInvite").value = code;
+    state.inviteCheck = null;
+    if (!code) { msg("#inviteMsg", state.settings && state.settings.invite_only ? t("inviteNeeded") : ""); return null; }
+    if (code.length < 8) { msg("#inviteMsg", ""); return null; }
+    const { data, error } = await sb.rpc("check_invite", { p_code: code });
+    if (error) { msg("#inviteMsg", ""); return null; }
+    state.inviteCheck = { code, ...data };
+    if (data.valid) msg("#inviteMsg", data.group ? t("inviteOkGroup", { name: data.name }) : t("inviteOkFrom", { name: data.name, u: data.username }), "ok");
+    else msg("#inviteMsg", t("inviteBad_" + data.reason), "error");
+    return state.inviteCheck;
+  }
+  $("#auInvite").addEventListener("input", () => { clearTimeout(inviteTimer); inviteTimer = setTimeout(checkInviteField, 300); });
+  $("#gateInvite").addEventListener("click", () => openAuth("signup"));
 
   /* ---- Senha forte ---- */
   function pwChecks(pw, ctx = {}) {
@@ -2095,7 +2294,11 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     $("#authTitle").textContent = t(mode === "login" ? "authLoginTitle" : "authSignupTitle");
     $("#authSubmit").textContent = t(mode === "login" ? "login" : "signup");
     $("#auPass").autocomplete = mode === "login" ? "current-password" : "new-password";
-    if (mode === "signup") renderPwRules();
+    if (mode === "signup") {
+      renderPwRules();
+      if (state.inviteCode && !$("#auInvite").value) $("#auInvite").value = state.inviteCode;
+      if (sb) checkInviteField();
+    }
     if (!keepMsg) { msg("#authMsg", ""); $("#resendFromLogin").hidden = true; }
   }
   function openAuth(mode = "login") {
@@ -2157,20 +2360,27 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         if (!name) throw new Error(t("errName"));
         if (!/^[a-z0-9_]{3,20}$/.test(username)) throw new Error(t("errUser"));
         if (!pwOk(renderPwRules())) throw new Error(t("errPassWeak"));
-        const { data: taken } = await sb.from("profiles").select("id").eq("username", username).maybeSingle();
-        if (taken) throw new Error(t("errUserTaken"));
+        const inv = $("#auInvite").value.trim() ? await checkInviteField() : null;
+        if (state.settings && state.settings.invite_only && !(inv && inv.valid)) throw new Error(inv ? t("inviteBad_" + inv.reason) : t("inviteNeeded"));
+        let free = true;
+        const av = await sb.rpc("username_available", { p_username: username });
+        if (!av.error) free = av.data;
+        else { const { data: taken } = await sb.from("profiles").select("id").eq("username", username).maybeSingle(); free = !taken; }
+        if (!free) throw new Error(t("errUserTaken"));
         const color = COLORS[Math.floor(Math.random() * COLORS.length)];
         const { data, error } = await sb.auth.signUp({
           email, password,
-          options: { data: { name, username, color }, emailRedirectTo: location.origin + location.pathname },
+          options: { data: { name, username, color, invite: inv && inv.valid ? inv.code : null }, emailRedirectTo: location.origin + location.pathname },
         });
         if (error) {
+          if (/database error|KOMU_INVITE/i.test(error.message)) throw new Error(t(state.settings && state.settings.invite_only ? "errInviteInvalid" : "errGeneric"));
           if (/registered|already/i.test(error.message)) throw new Error(t("errEmailTaken"));
           if (/sending|smtp|confirmation email/i.test(error.message)) throw new Error(t("errEmailSend"));
           if (/password/i.test(error.message)) throw new Error(t("errPassWeak") + " (" + error.message + ")");
           throw new Error(error.message);
         }
         $("#auPass").value = "";
+        clearInvite(); $("#auInvite").value = ""; msg("#inviteMsg", "");
         if (!data.session) { resendUntil = Date.now() + 60e3; openCheckEmail(email); return; }
         closeModal($("#authModal"));
         toast(t("accountCreated"));
@@ -2271,6 +2481,10 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
         const title = t("newMessageFrom", { name: (u && u.name) || "" });
         toast(title); browserNotify(title, m.content, "messages");
         if (state.view === "messages" && !state.dmWith) loadConversations();
+      })
+      // a outra pessoa abriu a conversa: minhas mensagens passam a "Lida"
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "messages", filter: `sender_id=eq.${me}` }, (payload) => {
+        applyReadReceipts([payload.new]);
       }).subscribe());
   }
   function onNewNotif(text, body) {
@@ -2278,6 +2492,26 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     else { state.notifCount++; renderBadges(); }
     toast(text); browserNotify(text, body || "", "notifications");
   }
+
+  // Confirmação de leitura
+  function applyReadReceipts(rows) {
+    if (!state.dmMessages || !rows.length) return;
+    let changed = false;
+    for (const r of rows) {
+      const m = state.dmMessages.find((x) => x.id === r.id);
+      if (m && r.read_at && m.read_at !== r.read_at) { m.read_at = r.read_at; changed = true; }
+    }
+    if (changed && state.view === "messages" && state.dmWith) renderTimeline();
+  }
+  // Reserva: com a conversa aberta, confere a cada 8 s se a outra pessoa já leu
+  async function refreshReadStatus() {
+    if (!sb || !state.me || state.view !== "messages" || !state.dmWith || !state.dmMessages) return;
+    const pending = state.dmMessages.filter((m) => m.sender_id === state.me.id && !m.read_at && !String(m.id).startsWith("tmp")).map((m) => m.id);
+    if (!pending.length) return;
+    const { data } = await sb.from("messages").select("id,read_at").in("id", pending.slice(-50)).not("read_at", "is", null);
+    applyReadReceipts(data || []);
+  }
+  setInterval(refreshReadStatus, 8000);
 
   // Reserva: confere mensagens novas a cada 20 s, caso o tempo real falhe na rede da pessoa
   async function pollDms() {
@@ -2332,6 +2566,9 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
       renderSettingsMedia(); renderRequests(); renderPwBox(true);
       loadRequests().then(() => { renderRequests(); renderBadges(); });
       load2fa();
+      $("#stAdmin").hidden = !m.is_admin;
+      loadInvites();
+      if (m.is_admin) loadAdmin();
     }
     openModal($("#settingsModal"));
   }
@@ -2488,6 +2725,143 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     renderRequests(); renderBadges();
     toast(t(accept ? "requestAccepted" : "requestDeclined"));
   });
+
+  /* ---- Convites ---- */
+  let invState = { status: null, list: null, lastCode: null, groupOpen: false };
+  const inviteLink = (code) => location.origin + location.pathname + "?convite=" + code;
+  const fmtDate = (iso) => new Date(iso).toLocaleDateString(locale(), { day: "2-digit", month: "2-digit" });
+  function inviteStatusHTML(inv, usedBy) {
+    if (inv.revoked) return `<span class="off">${esc(t("invRevoked"))}</span>`;
+    if (inv.expires_at && Date.parse(inv.expires_at) < Date.now()) return `<span class="off">${esc(t("invExpired"))}</span>`;
+    if (inv.max_uses === 1) {
+      if (inv.uses >= 1) return `${esc(t("invUsedBy"))} ${usedBy[0] ? `@${esc(usedBy[0].username)}` : "—"}`;
+      return `<span class="ok">${esc(t("invAvailable"))}</span>`;
+    }
+    const base = esc(t("invUses", { u: inv.uses, m: inv.max_uses })) + (inv.expires_at ? " · " + esc(t("invUntil", { d: fmtDate(inv.expires_at) })) : "");
+    return inv.uses >= inv.max_uses ? `<span class="off">${esc(t("invFull"))}</span> · ${base}` : `<span class="ok">${esc(t("invAvailable"))}</span> · ${base}`;
+  }
+  async function hydrateInvites(list) {
+    const codes = list.map((i) => i.code);
+    if (!codes.length) return list.map((i) => ({ ...i, usedBy: [] }));
+    const { data: uses } = await sb.from("invite_uses").select("user_id,invite_code").in("invite_code", codes);
+    const ids = [...new Set([...(uses || []).map((u) => u.user_id), ...list.map((i) => i.created_by)])];
+    const { data: profs } = ids.length ? await sb.from("profiles").select("id,username").in("id", ids) : { data: [] };
+    const U = new Map((profs || []).map((p) => [p.id, p]));
+    return list.map((i) => ({ ...i, creator: U.get(i.created_by), usedBy: (uses || []).filter((u) => u.invite_code === i.code).map((u) => U.get(u.user_id)).filter(Boolean) }));
+  }
+  async function loadInvites() {
+    const box = $("#stInvites");
+    if (state.settings && state.settings.legacy) { box.innerHTML = `<p class="st-text">${esc(t("errDbOutdated"))}</p>`; return; }
+    box.innerHTML = '<div class="spinner sm"></div>';
+    const [st, ls2] = await Promise.all([
+      sb.rpc("invite_status"),
+      sb.from("invites").select("*").eq("created_by", state.me.id).order("created_at", { ascending: false }).limit(30),
+    ]);
+    invState.status = st.data || null;
+    invState.list = await hydrateInvites(ls2.data || []);
+    renderInvites();
+  }
+  function inviteRowHTML(i, showCreator) {
+    const live = !i.revoked && !(i.expires_at && Date.parse(i.expires_at) < Date.now()) && i.uses < i.max_uses;
+    return `<div class="inv-row" data-code="${esc(i.code)}">
+      <code>${esc(i.code)}</code>
+      <div class="meta">${inviteStatusHTML(i, i.usedBy)}${i.note ? ` · ${esc(i.note)}` : ""}${showCreator && i.creator ? ` · ${esc(t("createdBy"))} @${esc(i.creator.username)}` : ""}</div>
+      ${live ? `<button class="icon-btn" data-inv="copy" title="${esc(t("copyLink"))}" aria-label="${esc(t("copyLink"))}">${ICONS.link}</button>
+      <button class="icon-btn" data-inv="revoke" title="${esc(t("cancelInvite"))}" aria-label="${esc(t("cancelInvite"))}">${ICONS.x}</button>` : ""}
+    </div>`;
+  }
+  function renderInvites() {
+    const box = $("#stInvites"), st = invState.status;
+    if (!st) { box.innerHTML = `<p class="st-text">${esc(t("errGeneric"))}</p>`; return; }
+    const head = st.admin ? esc(t("invAdmin")) : t("invLeft", { n: st.left, q: st.quota });
+    const canGen = st.admin || st.left > 0;
+    box.innerHTML = `
+      <p class="inv-status">${head}<br>${esc(t("invExplain"))}</p>
+      <div class="inv-actions">
+        <button class="btn-primary btn-sm" data-inv="gen" ${canGen ? "" : "disabled"}>${esc(t("genInvite"))}</button>
+        ${st.admin ? `<button class="btn-outline btn-sm" data-inv="group-toggle">${esc(t("genGroup"))}</button>` : ""}
+      </div>
+      ${st.admin && invState.groupOpen ? `<div class="inv-group">
+        <label>${esc(t("groupPeople"))}<input type="number" id="grpMax" min="2" max="1000" value="30"></label>
+        <label>${esc(t("groupDays"))}<input type="number" id="grpDays" min="1" max="365" value="7"></label>
+        <label class="full">${esc(t("groupNote"))}<input id="grpNote" maxlength="60"></label>
+        <div class="full"><button class="btn-primary btn-sm" data-inv="gen-group">${esc(t("genGroup"))}</button></div>
+      </div>` : ""}
+      ${invState.lastCode ? `<div class="inv-new"><b>${esc(t("invReady"))}</b>
+        <div class="row"><input readonly value="${esc(inviteLink(invState.lastCode))}">
+        <button class="btn-primary btn-sm" data-inv="copy-new">${esc(t("copyLink"))}</button>
+        ${navigator.share ? `<button class="btn-outline btn-sm" data-inv="share-new">${esc(t("shareLink"))}</button>` : ""}</div></div>` : ""}
+      <p class="form-msg" id="invMsg" style="padding:0 16px"></p>
+      <div class="inv-list-title">${esc(t("myInvites"))}</div>
+      ${invState.list.length ? invState.list.map((i) => inviteRowHTML(i, false)).join("") : `<p class="st-text" style="padding-bottom:8px">${esc(t("noInvites"))}</p>`}`;
+  }
+  async function genInvite(max = 1, days = null, note = null) {
+    const { data, error } = await sb.rpc("create_invite", { p_max_uses: max, p_days: days, p_note: note });
+    if (error) throw error;
+    return data.code;
+  }
+  async function onInviteClick(e) {
+    const b = e.target.closest("[data-inv]"); if (!b) return;
+    const act = b.dataset.inv;
+    const code = b.closest("[data-code]") && b.closest("[data-code]").dataset.code;
+    try {
+      if (act === "gen" || act === "gen-group") {
+        b.disabled = true;
+        const c = act === "gen" ? await genInvite()
+          : await genInvite(Math.max(2, +$("#grpMax").value || 2), Math.max(1, +$("#grpDays").value || 7), $("#grpNote").value.trim() || null);
+        invState.lastCode = c; invState.groupOpen = false;
+        await loadInvites(); if (state.me.is_admin) loadAdmin();
+        const box = $("#stInvites .inv-new"); if (box) box.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      } else if (act === "group-toggle") { invState.groupOpen = !invState.groupOpen; renderInvites(); }
+      else if (act === "copy-new") copy(inviteLink(invState.lastCode), t("inviteCopied"));
+      else if (act === "share-new") { try { await navigator.share({ title: "KOMU", text: t("inviteShareText"), url: inviteLink(invState.lastCode) }); } catch {} }
+      else if (act === "copy") copy(inviteLink(code), t("inviteCopied"));
+      else if (act === "revoke") {
+        if (!confirm(t("confirmCancelInvite"))) return;
+        const { error } = await sb.rpc("revoke_invite", { p_code: code });
+        if (error) throw error;
+        if (invState.lastCode === code) invState.lastCode = null;
+        toast(t("invCanceled")); await loadInvites(); if (state.me.is_admin) loadAdmin();
+      }
+    } catch (err) {
+      console.error(err); b.disabled = false;
+      const m = $("#invMsg"); if (m) msg(m, errMsg(t("errGeneric"), err), "error"); else toast(errMsg(t("errGeneric"), err));
+    }
+  }
+  $("#stInvites").addEventListener("click", onInviteClick);
+
+  /* ---- Painel do admin ---- */
+  let admList = null;
+  async function loadAdmin() {
+    const box = $("#stAdminBox");
+    box.innerHTML = '<div class="spinner sm"></div>';
+    await loadSettings();
+    const { data } = await sb.from("invites").select("*").order("created_at", { ascending: false }).limit(50);
+    admList = await hydrateInvites(data || []);
+    renderAdmin();
+  }
+  function renderAdmin() {
+    const box = $("#stAdminBox"), st = state.settings || {};
+    box.innerHTML = `
+      <label class="switch-row" for="admPublic"><div><b>${esc(t("admPublic"))}</b><p>${esc(t("admPublicDesc"))}</p></div><input type="checkbox" class="switch" id="admPublic" ${st.public_read ? "checked" : ""}></label>
+      <label class="switch-row" for="admInviteOnly"><div><b>${esc(t("admInviteOnly"))}</b><p>${esc(t("admInviteOnlyDesc"))}</p></div><input type="checkbox" class="switch" id="admInviteOnly" ${st.invite_only ? "checked" : ""}></label>
+      <div class="st-row"><span>${esc(t("admQuota"))}</span><input type="number" class="num-input" id="admQuota" min="0" max="1000" value="${+st.invite_quota || 13}"></div>
+      <p class="form-msg" id="admMsg" style="padding:0 16px"></p>
+      <div class="inv-list-title">${esc(t("allInvites"))}</div>
+      ${admList && admList.length ? admList.map((i) => inviteRowHTML(i, true)).join("") : `<p class="st-text">${esc(t("noInvites"))}</p>`}`;
+  }
+  async function saveAdmin(patch) {
+    const { error } = await sb.from("site_settings").update(patch).eq("id", 1);
+    if (error) return msg("#admMsg", errMsg(t("saveError"), error), "error");
+    Object.assign(state.settings, patch);
+    msg("#admMsg", t("admSaved"), "ok");
+  }
+  $("#stAdminBox").addEventListener("change", (e) => {
+    if (e.target.id === "admPublic") saveAdmin({ public_read: e.target.checked });
+    if (e.target.id === "admInviteOnly") saveAdmin({ invite_only: e.target.checked });
+    if (e.target.id === "admQuota") saveAdmin({ invite_quota: Math.max(0, Math.min(1000, +e.target.value || 0)) });
+  });
+  $("#stAdminBox").addEventListener("click", onInviteClick);
 
   /* ---- Alterar senha ---- */
   function renderPwBox(reset) {
@@ -3153,6 +3527,12 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     if (!post) return;
     const act = btn.dataset.action;
 
+    if (act === "expand") {
+      const el = art.querySelector(".post-text");
+      const open = el.classList.toggle("clamp");
+      btn.textContent = t(open ? "showMore" : "showLess");
+      return;
+    }
     if (act === "like" || act === "repost") {
       if (!state.me) return requireAuth();
       const [table, set, field] = act === "like" ? ["likes", state.liked, "like_count"] : ["reposts", state.reposted, "repost_count"];
@@ -3255,6 +3635,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
   $("#profileHead").addEventListener("click", (e) => {
     const st = e.target.closest("[data-follows]");
     if (st && state.profile) go("follows", { profileId: state.profile.u.id, tab: st.dataset.follows });
+    const ub = e.target.closest(".invited-by [data-user]");
+    if (ub) go("profile", { profileId: ub.dataset.user });
   });
   $("#mobileMe").addEventListener("click", () => (state.me ? go("me") : requireAuth()));
   $("#backBtn").addEventListener("click", goBack);
@@ -3274,6 +3656,8 @@ const SUPABASE_KEY = "sb_publishable_SdJhnrXFPNtRDe_lEcxy7w_osPmbKmq";
     renderAll();
     if (!sb) return;
 
+    await loadSettings();
+    renderGate();
     await syncAuth();
     renderAll();
     const pid = new URLSearchParams(location.search).get("post");
